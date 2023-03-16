@@ -136,26 +136,8 @@ hold off
         end
         
         close(f)
-%%
-ebsd = ebsd("apatite")
 
-%%
-%%Calcualtion of m-index %Taken from the mtex function which doesnt work? 
 
-% Step 1 : Uniform misorientation angle distribution for Crystal symmetry (CS)
-[density_uniform,~] = calcAngleDistribution(odf.CS,odf.SS);
 
-% normalize the misorientation angle distribution
-density_uniform = density_uniform/sum(density_uniform);
 
-% Step 2 : calculate the uncorrelated MDF from ODF
-uncorrelated_MDF = calcMDF(odf);
 
-% Step 3 : uncorrelated misorientation angle distribution from MDF
-[uncorrelated_density_MDF,~] = calcAngleDistribution(uncorrelated_MDF,'resolution',1*degree);
-
-% normalize the misorientation angle distribution
-uncorrelated_density_MDF = uncorrelated_density_MDF/sum(uncorrelated_density_MDF);
-
-% Step 4 : calculate the M-index
-MI = (sum((abs(density_uniform - uncorrelated_density_MDF))/2));

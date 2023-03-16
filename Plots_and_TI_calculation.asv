@@ -25,7 +25,7 @@ import_wizard
  %% Checking the data
 figure,
 plot(ebsd)
-
+ebsd1 = ebsd %sets a fresh reset point
 %% This will sort out both our phases into one and also only consider our indexed pixels
 %Converting Hydroxylapatite to apatite
      ebsd(ebsd.phase==2).phase =1;
@@ -71,7 +71,7 @@ hold off
 
 %First we define the number of runs we want by defining the variable "n"
     n = 100; % number of random boxes you want to place
-    Tindex = nan(n,2);
+    Tindex = nan(n,3);
     ebsd1 = ebsd %Used to reset the loop
 
 %% Runining the loop
@@ -102,9 +102,26 @@ hold off
                 crys = Miller({0,1,0},{0,0,1},ebsd.CS); %Setting miller index
                     ori = ebsd.orientations;
                     odf = calcDensity(ori);
+
                 t = textureindex (odf); % Calculate texture index
+                %Calculating the m-index (Function copy and pasted from
+                %mtex function)
+                % Step 1 : Uniform misorientation angle distribution for Crystal symmetry (CS)
+                [density_uniform,~] = calcAngleDistribution(odf.CS,odf.SS);
+                % normalize the misorientation angle distribution
+                density_uniform = density_uniform/sum(density_uniform);
+                % Step 2 : calculate the uncorrelated MDF from ODF
+                uncorrelated_MDF = calcMDF(odf);
+                % Step 3 : uncorrelated misorientation angle distribution from MDF
+                [uncorrelated_density_MDF,~] = calcAngleDistribution(uncorrelated_MDF,'resolution',1*degree);
+                % normalize the misorientation angle distribution
+                uncorrelated_density_MDF = uncorrelated_density_MDF/sum(uncorrelated_density_MDF);
+                % Step 4 : calculate the M-index
+                MI = (sum((abs(density_uniform - uncorrelated_density_MDF))/2));
+
                 Tindex(r,1) = t; % Export T-index to table
                 Tindex(r,2) = width % Export area data to table
+    	        Tindex(r,3) = MI % Add M index to table
                 
                     close all
                
@@ -119,7 +136,8 @@ hold off
         end
         
         close(f)
-%%
-%%Calcualtion of m-index
 
-m = calcMIndex(ebsd.orientations)
+
+
+
+
