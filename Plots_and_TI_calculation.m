@@ -1,3 +1,4 @@
+
 % Code associated with the publication "Quanitifying conodont crystals" by
 % Tested and running in Mtex v5.7.0 MATLAB R2021b
 
@@ -136,8 +137,3 @@ hold off
         end
         
         close(f)
-
-
-
-
-
