@@ -26,19 +26,21 @@ import_wizard
  %% Checking the data
 figure,
 plot(ebsd)
-ebsd1 = ebsd %sets a fresh reset point
+
 %% This will sort out both our phases into one and also only consider our indexed pixels
 %Converting Hydroxylapatite to apatite
      ebsd(ebsd.phase==2).phase =1;
      plot(ebsd)
 
 %% Cropping the data
+    figure; plot(ebsd,ebsd.orientations)
     polyx = selectPolygon;
     ebsd = ebsd(inpolygon(ebsd,polyx));
 
     %% Orientation Map
 figure; plot(ebsd,ebsd.orientations)
-
+ebsd1 = ebsd %sets a fresh reset point
+%ebsd.export('Pan. equicostatus.ctf')
 
 %% Step 3 Plotting Pole figures %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -69,7 +71,6 @@ hold off
 
 %% Step 5 Running the loop
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 %First we define the number of runs we want by defining the variable "n"
     n = 100; % number of random boxes you want to place
     Tindex = nan(n,4);
@@ -80,7 +81,7 @@ hold off
 
         ebsd = ebsd1
             %figure; 
-                %plot(ebsd)
+                plot(ebsd)
             % Randomly defining the dimentions of the subset
             width = randi(boxwhmax-boxwhmin)+boxwhmin
             height = width;
@@ -124,7 +125,7 @@ hold off
                 Tindex(r,1) = t; % Export T-index to table
                 Tindex(r,2) = width % Export area data to table
     	        Tindex(r,3) = MI % Add M index to table
-                    close all
+                    %close all
                
                 else       
                 
@@ -136,7 +137,7 @@ hold off
                 
         end
         
-        close(f)
+        %close(f)
 %% Calculate pfTi for C axis
  h= Miller({0,0,0,1},ebsd('Apatite').orientations.CS);                
        for i = 1:length(h)
@@ -150,7 +151,7 @@ hold off
     % calculate the multiplicity
     m(i)=length(symmetrise(h(i)));
 end
-
+ ebsd = ebsd1
 resolution = 1;
 r = regularS2Grid('resolution', resolution *degree);
 [theta]= polar(r);
@@ -167,6 +168,7 @@ for i = 1:length(h)
     pfTC = pfTindex
 end
 %% Calculate pfTi for other axis
+ ebsd = ebsd1
  h= Miller({1,1,-2,0},ebsd('Apatite').orientations.CS);                
        for i = 1:length(h)
     pfg = calcPDF(odf, h(i));
