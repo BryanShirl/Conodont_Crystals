@@ -15,7 +15,7 @@ odf = calcDensity(ori)
 %%Calcualtion of m-index %Taken from the mtex function which doesnt work? 
 
 % Step 1 : Uniform misorientation angle distribution for Crystal symmetry (CS)
-[density_uniform,~] = calcAngleDistribution(odf.CS,odf.SS);
+[density_uniform,~] = calcAngleDistribution(ebsd.CS,odf.SS);
 
 % normalize the misorientation angle distribution
 density_uniform = density_uniform/sum(density_uniform);
@@ -31,4 +31,8 @@ uncorrelated_density_MDF = uncorrelated_density_MDF/sum(uncorrelated_density_MDF
 
 % Step 4 : calculate the M-index
 MI = (sum((abs(density_uniform - uncorrelated_density_MDF))/2));
+
+%% 
+% pole figure intensi
+plotPDF(odfimp,Miller({0,0,0,1},{1,1,-2,0},ebsd('Apatite').orientations.CS),'contourf')
 

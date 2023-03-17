@@ -72,9 +72,8 @@ hold off
 
 %First we define the number of runs we want by defining the variable "n"
     n = 100; % number of random boxes you want to place
-    Tindex = nan(n,3);
+    Tindex = nan(n,4);
     ebsd1 = ebsd %Used to reset the loop
-
 %% Runining the loop
     f = waitbar(0, 'Starting'); % Starts a progress bar 
     for r = 1:n
@@ -100,7 +99,7 @@ hold off
 %%  
                 if length(ebsd(ebsd.phase==1)) > length(ebsd(ebsd.phase==0))
                 
-                crys = Miller({0,1,0},{0,0,1},ebsd.CS); %Setting miller index
+                crys = Miller({0,0,0,1},{1,1,-2,0},ebsd.CS); %Setting miller index
                     ori = ebsd.orientations;
                     odf = calcDensity(ori);
 
@@ -120,10 +119,11 @@ hold off
                 % Step 4 : calculate the M-index
                 MI = (sum((abs(density_uniform - uncorrelated_density_MDF))/2));
 
+
+
                 Tindex(r,1) = t; % Export T-index to table
                 Tindex(r,2) = width % Export area data to table
     	        Tindex(r,3) = MI % Add M index to table
-                
                     close all
                
                 else       
@@ -137,3 +137,61 @@ hold off
         end
         
         close(f)
+%% Calculate pfTi for C axis
+ h= Miller({0,0,0,1},ebsd('Apatite').orientations.CS);                
+       for i = 1:length(h)
+    pfg = calcPDF(odf, h(i));
+    if pfg.bandwidth ~=0
+    pfg_max(i) =  max(pfg);
+    else
+    pfg_max(i) =1;
+    end
+    pfTindex(i) = pfg.norm/sqrt(4*pi);
+    % calculate the multiplicity
+    m(i)=length(symmetrise(h(i)));
+end
+
+resolution = 1;
+r = regularS2Grid('resolution', resolution *degree);
+[theta]= polar(r);
+dr = (resolution.*degree).^2.*cos(resolution*degree)./4./pi;
+for i = 1:length(h)
+    pfg = calcPoleFigure(odf, h(i), r,'complete');
+    pfg_max(i) =  max(pfg);
+    d =pfg.intensities;
+    d = reshape(d,size(r));
+    pfTindex(i) = sqrt(sum(sum(dr.*sin(theta).*d.^2)));
+    % calculate the multiplicity
+    m(i)=length(symmetrise(h(i)));
+    %pfTindex_M(i) = m(i)*pfTindex(i);
+    pfTC = pfTindex
+end
+%% Calculate pfTi for other axis
+ h= Miller({1,1,-2,0},ebsd('Apatite').orientations.CS);                
+       for i = 1:length(h)
+    pfg = calcPDF(odf, h(i));
+    if pfg.bandwidth ~=0
+    pfg_max(i) =  max(pfg);
+    else
+    pfg_max(i) =1;
+    end
+    pfTindex(i) = pfg.norm/sqrt(4*pi);
+    % calculate the multiplicity
+    m(i)=length(symmetrise(h(i)));
+end
+
+resolution = 1;
+r = regularS2Grid('resolution', resolution *degree);
+[theta]= polar(r);
+dr = (resolution.*degree).^2.*cos(resolution*degree)./4./pi;
+for i = 1:length(h)
+    pfg = calcPoleFigure(odf, h(i), r,'complete');
+    pfg_max(i) =  max(pfg);
+    d =pfg.intensities;
+    d = reshape(d,size(r));
+    pfTindex(i) = sqrt(sum(sum(dr.*sin(theta).*d.^2)));
+    % calculate the multiplicity
+    m(i)=length(symmetrise(h(i)));
+    %pfTindex_M(i) = m(i)*pfTindex(i);
+    pfTA= pfTindex
+end
