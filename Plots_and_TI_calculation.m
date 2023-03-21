@@ -24,18 +24,18 @@ startup_mtex
 import_wizard
 
  %% Checking the data
-figure,
-plot(ebsd)
+%figure,
+%plot(ebsd)
 
 %% This will sort out both our phases into one and also only consider our indexed pixels
 %Converting Hydroxylapatite to apatite
-     ebsd(ebsd.phase==2).phase =1;
-     plot(ebsd)
+     %ebsd(ebsd.phase==2).phase =1;
+     %plot(ebsd)
 
 %% Cropping the data
-    figure; plot(ebsd,ebsd.orientations)
-    polyx = selectPolygon;
-    ebsd = ebsd(inpolygon(ebsd,polyx));
+    %figure; plot(ebsd,ebsd.orientations)
+    %polyx = selectPolygon;
+    %ebsd = ebsd(inpolygon(ebsd,polyx));
 
     %% Orientation Map
 figure; plot(ebsd,ebsd.orientations)
@@ -65,23 +65,24 @@ hold off
    d = round(min(ebsd.prop.y)); %ymin value 
  
  %Then we define the upper and lower limits of the area to be subsampled          
-   boxwhmin = 20; % Sets min width and height of box for the ana (Here 20, but sample dependent)
-   boxwhmax = 100; % Sets max width and height of box for the ana (Here 100, but sample dependent)
+   boxwhmin = 10; % Sets min width and height of box for the ana (Here 20, but sample dependent)
+   boxwhmax = 50; % Sets max width and height of box for the ana (Here 100, but sample dependent)
 
 
 %% Step 5 Running the loop
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %First we define the number of runs we want by defining the variable "n"
-    n = 100; % number of random boxes you want to place
-    Tindex = nan(n,4);
+    n = 50; % number of random boxes you want to place
+    Tindex = nan(n,5);
+    F = meanFilter;
+    F.numNeighbours = 1;
     ebsd1 = ebsd %Used to reset the loop
 %% Runining the loop
     f = waitbar(0, 'Starting'); % Starts a progress bar 
     for r = 1:n
-
         ebsd = ebsd1
             %figure; 
-                plot(ebsd)
+                %plot(ebsd)
             % Randomly defining the dimentions of the subset
             width = randi(boxwhmax-boxwhmin)+boxwhmin
             height = width;
@@ -93,13 +94,15 @@ hold off
             yBottom = yCenter - height/2
             
             % Placement of the box and subsetting the EBSD data
-            rec = rectangle('Position', [xLeft, yBottom, width, height], 'EdgeColor', 'b', 'LineWidth', 3);
+            %rec = rectangle('Position', [xLeft, yBottom, width, height], 'EdgeColor', 'b', 'LineWidth', 3);
             ebsd = ebsd(inpolygon(ebsd,[xLeft, yBottom, width, height]));
 
             %pause(0.5)
-%%  
+
                 if length(ebsd(ebsd.phase==1)) > length(ebsd(ebsd.phase==0))
-                
+                    %figure; plot(ebsd,ebsd.orientations)
+                    ebsd = smooth(ebsd,F);
+                    %figure; plot(ebsd,ebsd.orientations)
                 crys = Miller({0,0,0,1},{1,1,-2,0},ebsd.CS); %Setting miller index
                     ori = ebsd.orientations;
                     odf = calcDensity(ori);
@@ -119,26 +122,8 @@ hold off
                 uncorrelated_density_MDF = uncorrelated_density_MDF/sum(uncorrelated_density_MDF);
                 % Step 4 : calculate the M-index
                 MI = (sum((abs(density_uniform - uncorrelated_density_MDF))/2));
-
-
-
-                Tindex(r,1) = t; % Export T-index to table
-                Tindex(r,2) = width % Export area data to table
-    	        Tindex(r,3) = MI % Add M index to table
-                    %close all
-               
-                else       
-                
-                    close all
-                
-                end  
-
-        waitbar(r/n, f, sprintf('Progress: %d %%', floor(r/n*100)));
-                
-        end
-        
-        %close(f)
-%% Calculate pfTi for C axis
+      
+% Calculate pfTi for C axis
  h= Miller({0,0,0,1},ebsd('Apatite').orientations.CS);                
        for i = 1:length(h)
     pfg = calcPDF(odf, h(i));
@@ -153,21 +138,22 @@ hold off
 end
  ebsd = ebsd1
 resolution = 1;
-r = regularS2Grid('resolution', resolution *degree);
-[theta]= polar(r);
+reg = regularS2Grid('resolution', resolution *degree);
+[theta]= polar(reg);
 dr = (resolution.*degree).^2.*cos(resolution*degree)./4./pi;
 for i = 1:length(h)
-    pfg = calcPoleFigure(odf, h(i), r,'complete');
+    pfg = calcPoleFigure(odf, h(i), reg,'complete');
     pfg_max(i) =  max(pfg);
-    d =pfg.intensities;
-    d = reshape(d,size(r));
-    pfTindex(i) = sqrt(sum(sum(dr.*sin(theta).*d.^2)));
+    int =pfg.intensities;
+    int = reshape(int,size(reg));
+    pfTindex(i) = sqrt(sum(sum(dr.*sin(theta).*int.^2)));
     % calculate the multiplicity
     m(i)=length(symmetrise(h(i)));
     %pfTindex_M(i) = m(i)*pfTindex(i);
     pfTC = pfTindex
 end
-%% Calculate pfTi for other axis
+
+% Calculate pfTi for other axis
  ebsd = ebsd1
  h= Miller({1,1,-2,0},ebsd('Apatite').orientations.CS);                
        for i = 1:length(h)
@@ -183,17 +169,38 @@ end
 end
 
 resolution = 1;
-r = regularS2Grid('resolution', resolution *degree);
-[theta]= polar(r);
+reg = regularS2Grid('resolution', resolution *degree);
+[theta]= polar(reg);
 dr = (resolution.*degree).^2.*cos(resolution*degree)./4./pi;
 for i = 1:length(h)
-    pfg = calcPoleFigure(odf, h(i), r,'complete');
+    pfg = calcPoleFigure(odf, h(i), reg,'complete');
     pfg_max(i) =  max(pfg);
-    d =pfg.intensities;
-    d = reshape(d,size(r));
-    pfTindex(i) = sqrt(sum(sum(dr.*sin(theta).*d.^2)));
+    int =pfg.intensities;
+    int = reshape(int,size(reg));
+    pfTindex(i) = sqrt(sum(sum(dr.*sin(theta).*int.^2)));
     % calculate the multiplicity
     m(i)=length(symmetrise(h(i)));
     %pfTindex_M(i) = m(i)*pfTindex(i);
     pfTA= pfTindex
 end
+    clear reg
+
+
+                Tindex(r,1) = t; % Export T-index to table
+                Tindex(r,3) = width % Export area data to table
+    	        Tindex(r,2) = MI % Add M index to table
+                Tindex(r,4) = pfTC % Add M index to table
+                Tindex(r,5) = pfTA % Add M index to table
+                    %close all
+               
+                else       
+                
+                    close all
+                
+                end  
+
+        waitbar(r/n, f, sprintf('Progress: %d %%', floor(r/n*100)));
+                
+        end
+        
+        close(f)
