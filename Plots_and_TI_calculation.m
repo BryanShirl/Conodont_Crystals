@@ -21,7 +21,23 @@ startup_mtex
 % Setting up an convention for how to import our data! 
 % X to the east, Y to the south, and Z into the plane
 % This can all be done via the import wizard
-import_wizard
+% crystal symmetry
+CS = {... 
+  'notIndexed',...
+  crystalSymmetry('6/m', [9.4 9.4 6.9], 'X||a*', 'Y||b', 'Z||c*', 'mineral', 'Apatite', 'color', [0.53 0.81 0.98])};
+% plotting convention
+setMTEXpref('xAxisDirection','east');
+setMTEXpref('zAxisDirection','intoPlane');
+% Specify File Names
+% path to files
+pname = 'C:\Users\Bryan\Documents\GitHub\Conodont_Crystals\EBSD data (ctf)'; %Set your own directoryww
+% which files to be imported
+fname = [pname '\Pro. mulleri.ctf'];% Change to the ctf file you want
+% Import the Data
+% create an EBSD variable containing the data
+ebsd = EBSD.load(fname,CS,'interface','ctf',...
+  'convertEuler2SpatialReferenceFrame');
+
 
  %% Checking the data
 %figure,
@@ -37,8 +53,13 @@ import_wizard
     %polyx = selectPolygon;
     %ebsd = ebsd(inpolygon(ebsd,polyx));
 
-    %% Orientation Map
+ %% Orientation Map
 figure; plot(ebsd,ebsd.orientations)
+
+%% Option to clean data
+%ebsd_clean = ebsd(ebsd.mad< 0.83)
+%ebsd_clean = ebsd(ebsd.mad> .39);
+%%
 ebsd1 = ebsd %sets a fresh reset point
 %ebsd.export('Pan. equicostatus.ctf')
 
@@ -72,44 +93,48 @@ hold off
 %% Step 5 Running the loop
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %First we define the number of runs we want by defining the variable "n"
-    n = 50; % number of random boxes you want to place
+    n = 200; % number of random boxes you want to place
+%Set up an empty double to fill with outputs
     Tindex = nan(n,5);
-    F = meanFilter;
-    F.numNeighbours = 1;
+%Setting filter parameters. NOTE: does not filter by default, its
+%commented out in the below loop.
+    F = medianFilter;
+    F.numNeighbours = 3;
     ebsd1 = ebsd %Used to reset the loop
 %% Runining the loop
     f = waitbar(0, 'Starting'); % Starts a progress bar 
     for r = 1:n
         ebsd = ebsd1
-            %figure; 
-                %plot(ebsd)
-            % Randomly defining the dimentions of the subset
-            width = randi(boxwhmax-boxwhmin)+boxwhmin
-            height = width;
+        %figure; 
+        %plot(ebsd)
+        % Randomly defining the dimentions of the subset
+        width = randi(boxwhmax-boxwhmin)+boxwhmin
+        height = width;
 
-            % Randomly defining the x,y co-ords of the box
-            xCenter = randi(a-b)+b; % Wherever...
-            yCenter = randi(c-d)+ d; % Wherever...
-            xLeft = xCenter - width/2;
-            yBottom = yCenter - height/2
+        % Randomly defining the x,y co-ords of the box
+        xCenter = randi(a-b)+b; % Wherever...
+        yCenter = randi(c-d)+ d; % Wherever...
+        xLeft = xCenter - width/2;
+        yBottom = yCenter - height/2
             
-            % Placement of the box and subsetting the EBSD data
+        % Placement of the box and subsetting the EBSD data
             %rec = rectangle('Position', [xLeft, yBottom, width, height], 'EdgeColor', 'b', 'LineWidth', 3);
-            ebsd = ebsd(inpolygon(ebsd,[xLeft, yBottom, width, height]));
+        ebsd = ebsd(inpolygon(ebsd,[xLeft, yBottom, width, height]));
 
-            %pause(0.5)
-
-                if length(ebsd(ebsd.phase==1)) > length(ebsd(ebsd.phase==0))
-                    %figure; plot(ebsd,ebsd.orientations)
-                    ebsd = smooth(ebsd,F);
-                    %figure; plot(ebsd,ebsd.orientations)
+        %pause(0.5)
+        %check if the data is more than 50 of fov. If not nan returned
+        if length(ebsd(ebsd.phase==1)) > length(ebsd(ebsd.phase==0)) 
+          
+        %Do we want the data smoothed? Tick this box
+        %ebsd = smooth(ebsd,F);
+         
                 crys = Miller({0,0,0,1},{1,1,-2,0},ebsd.CS); %Setting miller index
                     ori = ebsd.orientations;
                     odf = calcDensity(ori);
-
-                t = textureindex (odf); % Calculate texture index
-                %Calculating the m-index (Function copy and pasted from
-                %mtex function)
+        % Calculate texture index
+          t = textureindex (odf); 
+                
+           %Calculating the m-index (Function copy and pasted from mtex function)
                 % Step 1 : Uniform misorientation angle distribution for Crystal symmetry (CS)
                 [density_uniform,~] = calcAngleDistribution(odf.CS,odf.SS);
                 % normalize the misorientation angle distribution
@@ -123,6 +148,7 @@ hold off
                 % Step 4 : calculate the M-index
                 MI = (sum((abs(density_uniform - uncorrelated_density_MDF))/2));
       
+%Not yet implimented in mtex but from 
 % Calculate pfTi for C axis
  h= Miller({0,0,0,1},ebsd('Apatite').orientations.CS);                
        for i = 1:length(h)
@@ -195,7 +221,7 @@ end
                
                 else       
                 
-                    close all
+                    %close all
                 
                 end  
 
@@ -203,4 +229,4 @@ end
                 
         end
         
-        close(f)
+        %close(f)
