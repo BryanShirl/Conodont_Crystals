@@ -1,10 +1,10 @@
 library(ggplot2)
 library(viridis)
 library(scales)
-library(RColorBrewer)
 library(rlang)
 library(ggpubr)
 library(plyr)
+library(lmodel2)
 
 OurConodontData = read.csv("../Data sets/Our raman data.csv")
 Specdata = read.csv("../Data sets/Sample spectra all.csv")
@@ -15,13 +15,13 @@ ThomasTeethData = read.csv("../Data sets/Thomas Teeth vs Conos.csv")
 #### Chapter 1 : plots of our data ####
 
 ## Plots our Raman data for all 6 conodonts
-p = ggplot(Specdata,aes(x=Prox)) + 
-  geom_line(aes(y = Proy), color = "#aecec5ff",linewidth =0.75,) +
-  geom_line(aes(y = Pany), color = "#cad5c1ff", linewidth =0.75,) +
-  geom_line(aes(y = Excay), color = "#bf9e66ff",linewidth =0.75,) +
-  geom_line(aes(y = Bispy), color = "#a36b2bff",linewidth =0.75,) +
-  geom_line(aes(y = Paly), color = "#dcd1a2ff",linewidth =0.75,) +
-  geom_line(aes(y = Tripy), color = "#2686a0ff",linewidth =0.75,) +
+p = ggplot(Specdata,aes(x=Spectra)) + 
+  geom_line(aes(y = Pro..muelleri), color = "#aecec5ff",linewidth =0.75,) +
+  geom_line(aes(y = Pan..equicostatus), color = "#cad5c1ff", linewidth =0.75,) +
+  geom_line(aes(y = W..excavata), color = "#bf9e66ff",linewidth =0.75,) +
+  geom_line(aes(y = B..cf..aculeatus), color = "#a36b2bff",linewidth =0.75,) +
+  geom_line(aes(y = Palmatolepis.sp.), color = "#dcd1a2ff",linewidth =0.75,) +
+  geom_line(aes(y = T..gracilis), color = "#2686a0ff",linewidth =0.75,) +
   xlim(940,980)+
   ylim(6500,14000)+
   xlab(expression("Wavenumber (cm"^-1*")")) + 
@@ -65,27 +65,22 @@ ggarrange(p,p1, p2, p3,
 
 ## Plot our data vs other publications with conodont raman data
 
-pa = ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author)) + 
+pa = ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Author)) + 
   geom_point(size=3) +
   theme_classic()+
   ylab(expression("FWHM of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) +
   xlab(expression("PCMI of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
   theme(legend.key.size = unit(0.4, 'cm')) +
-  scale_color_manual(values=c("#f1873a", "#0d455f","#fcd804", "#31b6b2"))+
+  scale_shape_manual(values=c(16,15,17,18))+
+  scale_color_manual(values=c("#8babf1", "#054fb9","#c44601", "#f57600"))+
   xlim(954,968)+
-  ylim(0,20)+
-  theme(axis.text.x=element_blank(),
-          axis.ticks.x=element_blank())+
-  stat_ellipse()
+  ylim(0,20)
 
 ## Plot our data vs Thomas et.al. 2011 data (selected for enamel,enameloid and dentine)
 
 pb = ggplot(ThomasTeethData, aes(y=FWHM, x=Peak, color=Name, shape=Location
  )) + 
-  geom_point(size=3) +
-  scale_shape_manual(values=c(1:26))+
   theme_classic()+
-  theme(legend.key.size = unit(0.4, 'cm')) +
   geom_point(size=5) + 
   scale_shape_manual(values=c(16,15,17,18))+
   ylab(expression("FWHM of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) + 
@@ -101,4 +96,50 @@ pb = ggplot(ThomasTeethData, aes(y=FWHM, x=Peak, color=Name, shape=Location
 ggarrange(pa, pb,
           labels = c("A", "B", "C","D"),
           ncol = 1, nrow = 2)
+
+#### Chapter 3: Regression analysis ####
+
+models <- lapply(split(OtherAuthorConoData, OtherAuthorConoData$Author),
+       lmodel2, formula=FWHM ~ Peak, range.y="relative", range.x="relative",
+       nperm=99)
+
+Zhang <- models$`Zhang et al. 2017`$regression.results[models$`Zhang et al. 2017`$regression.results$Method=="RMA",]
+McMillan <- models$`McMillan & Golding 2019`$regression.results[models$`McMillan & Golding 2019`$regression.results$Method=="RMA",]
+Rantitsch <- models$`Rantitsch et al. 2023`$regression.results[models$`Rantitsch et al. 2023`$regression.results$Method=="RMA",]
+  
+ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Author)) + 
+  geom_point(size=3)+
+  theme_classic()+
+  ylab(expression("FWHM of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) +
+  xlab(expression("PCMI of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
+  theme(legend.key.size = unit(0.4, 'cm')) +
+  scale_shape_manual(values=c(16,15,17,18))+
+  scale_color_manual(values=c("#8babf1", "#054fb9","#c44601", "#f57600"))+
+  xlim(954,968)+
+  ylim(0,20)+
+  geom_abline(intercept = McMillan$Intercept, slope = McMillan$Slope, colour = "#8babf1")+
+  geom_abline(intercept = Rantitsch$Intercept, slope = Rantitsch$Slope, colour = "#054fb9")
+
+# Exporting slope coefficients and their confidence intervals into a file
+
+CI_slope <- data.frame()
+for (i in 1:length(models)) {
+  CI_slope <- rbind(CI_slope, models[[i]]$confidence.intervals[4,4:5])
+}
+
+slope <- data.frame()
+for (i in 1:length(models)) {
+  slope <- rbind(slope, models[[i]]$regression.results[4,3])
+}
+colnames(slope) <- "Slope"
+
+Slopes_RMA_CI <- cbind(slope, CI_slope)
+rownames(Slopes_RMA_CI) <- c("McMillan & Golding 2019","Rantitsch et al. 2023","Shirley et al. 2023","Zhang et al. 2017")
+
+utils::write.table(Slopes_RMA_CI, 
+            file = "Slopes_RMA_CI",
+            sep = ",",
+            col.names = TRUE)
+            
+
 

@@ -11,7 +11,7 @@ close all
 home
 %% Start up Mtex
 %Set WD to the path in which mtex is stored
-mtexpath = 'C:\Mtex\mtex-5.7.0'; %Set this to your own path to mtex
+mtexpath = 'C:\Users\hohma004\Documents\Mtex'; %Set this to your own path to mtex
 addpath(mtexpath)
 startup_mtex
 
@@ -30,9 +30,9 @@ setMTEXpref('xAxisDirection','east');
 setMTEXpref('zAxisDirection','intoPlane');
 % Specify File Names
 % path to files
-pname = 'C:\Users\Bryan\Documents\GitHub\Conodont_Crystals\EBSD data (ctf)'; %Set your own directoryww
+pname = ''; %Set your own directoryww
 % which files to be imported
-fname = [pname '\Pro. mulleri.ctf'];% Change to the ctf file you want
+fname = [pname 'Pro.ctf'];% Change to the ctf file you want
 % Import the Data
 % create an EBSD variable containing the data
 ebsd = EBSD.load(fname,CS,'interface','ctf',...
@@ -40,28 +40,13 @@ ebsd = EBSD.load(fname,CS,'interface','ctf',...
 
 
  %% Checking the data
-%figure,
-%plot(ebsd)
+figure,
+plot(ebsd)
 
-%% This will sort out both our phases into one and also only consider our indexed pixels
-%Converting Hydroxylapatite to apatite
-     %ebsd(ebsd.phase==2).phase =1;
-     %plot(ebsd)
-
-%% Cropping the data
-    %figure; plot(ebsd,ebsd.orientations)
-    %polyx = selectPolygon;
-    %ebsd = ebsd(inpolygon(ebsd,polyx));
-
- %% Orientation Map
+%% Orientation Map
 figure; plot(ebsd,ebsd.orientations)
 
-%% Option to clean data
-%ebsd_clean = ebsd(ebsd.mad< 0.83)
-%ebsd_clean = ebsd(ebsd.mad> .39);
-%%
 ebsd1 = ebsd %sets a fresh reset point
-%ebsd.export('Pan. equicostatus.ctf')
 
 %% Step 3 Plotting Pole figures %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -227,6 +212,7 @@ end
 
         waitbar(r/n, f, sprintf('Progress: %d %%', floor(r/n*100)));
                 
-        end
-        
+    end
+
+Tindex = rmmissing(Tindex)
         %close(f)
