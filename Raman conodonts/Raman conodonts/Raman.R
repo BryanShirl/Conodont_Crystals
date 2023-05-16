@@ -1,5 +1,4 @@
 library(ggplot2)
-library(viridis)
 library(scales)
 library(rlang)
 library(ggpubr)
@@ -15,7 +14,7 @@ ThomasTeethData = read.csv("../Data sets/Thomas Teeth vs Conos.csv")
 #### Chapter 1 : plots of our data ####
 
 ## Plots our Raman data for all 6 conodonts
-p = ggplot(Specdata,aes(x=Spectra)) + 
+p = ggplot2::ggplot(Specdata,aes(x=Spectra)) + 
   geom_line(aes(y = Pro..muelleri), color = "#aecec5ff",linewidth =0.75,) +
   geom_line(aes(y = Pan..equicostatus), color = "#cad5c1ff", linewidth =0.75,) +
   geom_line(aes(y = W..excavata), color = "#bf9e66ff",linewidth =0.75,) +
@@ -30,7 +29,7 @@ p = ggplot(Specdata,aes(x=Spectra)) +
   theme(axis.text.y = element_text(angle = 90))
 
 ## Plots our Raman data for all 6 conodonts
-p1 = ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=Sample.name, shape=Sample.name)) + 
+p1 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=Sample.name, shape=Sample.name)) + 
   geom_point(size=3,stroke = 2) + 
   scale_shape_manual(values=c(4,15,16,17,18,25))+
   ylab(expression("FWHM of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) + 
@@ -39,7 +38,7 @@ p1 = ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=Sample.name, shape=Sample.
   scale_colour_manual(values=hcl.colors(n=6, palette = "Earth"))
 
 ## Plots our Raman data for all 6 conodonts (Color is CAI)
-p2 = ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=CAI,shape=Sample.name)) + 
+p2 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=CAI,shape=Sample.name)) + 
   geom_point(size=3,stroke = 2) + 
   scale_shape_manual(values=c(4,15,16,17,18,25)) + 
   ylab(expression("FWHM of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+ 
@@ -48,7 +47,7 @@ p2 = ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=CAI,shape=Sample.name)) +
   scale_colour_gradient(low = "#dcb37b", high = "#5e4a4b")
 
 ## Plots our Raman data for all 6 conodonts (Color is inside to outside)
-p3 = ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=Line,shape=Sample.name)) + 
+p3 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=Line,shape=Sample.name)) + 
   geom_point(size=3,stroke = 2) + 
   scale_shape_manual(values=c(4,15,16,17,18,25))+ 
   ylab(expression("FWHM of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) + 
@@ -57,7 +56,7 @@ p3 = ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=Line,shape=Sample.name)) +
   theme_classic()
 
 ## Combined plot of all our conodont data
-ggarrange(p,p1, p2, p3,
+ggpubr::ggarrange(p,p1, p2, p3,
               labels = c("A", "B", "C","D"),
               ncol = 2, nrow = 2)
 
@@ -65,7 +64,7 @@ ggarrange(p,p1, p2, p3,
 
 ## Plot our data vs other publications with conodont raman data
 
-pa = ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Author)) + 
+pa = ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Author)) + 
   geom_point(size=3) +
   theme_classic()+
   ylab(expression("FWHM of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) +
@@ -78,7 +77,7 @@ pa = ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Author)
 
 ## Plot our data vs Thomas et.al. 2011 data (selected for enamel,enameloid and dentine)
 
-pb = ggplot(ThomasTeethData, aes(y=FWHM, x=Peak, color=Name, shape=Location
+pb = ggplot2::ggplot(ThomasTeethData, aes(y=FWHM, x=Peak, color=Name, shape=Location
  )) + 
   theme_classic()+
   geom_point(size=5) + 
@@ -93,21 +92,21 @@ pb = ggplot(ThomasTeethData, aes(y=FWHM, x=Peak, color=Name, shape=Location
   ylim(0,20)
   
   
-ggarrange(pa, pb,
+ggpubr::ggarrange(pa, pb,
           labels = c("A", "B", "C","D"),
           ncol = 1, nrow = 2)
 
 #### Chapter 3: Regression analysis ####
 
 models <- lapply(split(OtherAuthorConoData, OtherAuthorConoData$Author),
-       lmodel2, formula=FWHM ~ Peak, range.y="relative", range.x="relative",
+       lmodel2::lmodel2, formula=FWHM ~ Peak, range.y="relative", range.x="relative",
        nperm=99)
 
 Zhang <- models$`Zhang et al. 2017`$regression.results[models$`Zhang et al. 2017`$regression.results$Method=="RMA",]
 McMillan <- models$`McMillan & Golding 2019`$regression.results[models$`McMillan & Golding 2019`$regression.results$Method=="RMA",]
 Rantitsch <- models$`Rantitsch et al. 2023`$regression.results[models$`Rantitsch et al. 2023`$regression.results$Method=="RMA",]
   
-ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Author)) + 
+ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Author)) + 
   geom_point(size=3)+
   theme_classic()+
   ylab(expression("FWHM of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) +
@@ -133,8 +132,14 @@ for (i in 1:length(models)) {
 }
 colnames(slope) <- "Slope"
 
-Slopes_RMA_CI <- cbind(slope, CI_slope)
+R_squared <- numeric()
+for (i in 1:length(models)) {
+  R_squared <- rbind(R_squared, models[[i]]$rsquare)
+}
+
+Slopes_RMA_CI <- cbind(slope, CI_slope, R_squared)
 rownames(Slopes_RMA_CI) <- c("McMillan & Golding 2019","Rantitsch et al. 2023","Shirley et al. 2023","Zhang et al. 2017")
+
 
 utils::write.table(Slopes_RMA_CI, 
             file = "Slopes_RMA_CI",
