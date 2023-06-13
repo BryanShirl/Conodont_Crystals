@@ -1,0 +1,92 @@
+---
+title: "Comparing methods for crystal texture quantification"
+author: "Bryan Shirley"
+date: "2023-06-12"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r importing the data and setting up the libs,echo=FALSE}
+library(ggplot2)
+library(ggpubr)
+Data = read.csv("D:/001 Janus/001 Projects/Conodont Crystals/Texture methods comparison/TextureResults.csv", header = T, sep=';')
+```
+
+```{r Setting up the box plots}
+
+p1 = ggplot(data = Data, aes(x=reorder(Taxa,T.index), y=T.index,fill=Taxa)) + 
+  geom_boxplot()
+
+p2 = ggplot(data = Data, aes(x=reorder(Taxa,T.index), y=M.index,fill=Taxa)) + 
+  geom_boxplot()
+
+p3 = ggplot(data = Data, aes(x=reorder(Taxa,T.index), y=pfT.index..C.,fill=Taxa
+)) + geom_boxplot()
+
+p4 =   
+ggplot(data = Data, aes(x=reorder(Taxa,T.index), y=pfT.index..A.,fill=Taxa
+)) + geom_boxplot()
+  
+  p1 = p1 +theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),axis.ticks.x=element_blank(),
+                                 axis.title.x = element_blank())+
+    ylab("T-index")+
+    scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
+  
+  p2 = p2 +theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),
+                                 axis.ticks.x=element_blank(),axis.title.x = element_blank())+
+    ylab("M-index")+
+    scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
+  
+  p3 = p3 + theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),
+                                  axis.ticks.x=element_blank(),axis.title.x = element_blank())+
+    ylab("pfT-index (C)")+
+    scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
+  
+  p4 = p4 +theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),
+                                 axis.ticks.x=element_blank(),axis.title.x = element_blank())+
+    ylab("pfT-index (A)")+
+    scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
+```
+
+## All the methods.
+
+Here we plot 3 methods of looking at the texture index of materials. First, we use the texture index, followed by the m-index and then the pole figure Texture index (For the A and C axis).
+
+```{r}
+ggpubr::ggarrange(p1, p2,p3,p4,
+                  labels = c("a", "b", "c","d"),
+                  ncol = 2, nrow = 2)
+```
+
+### Comparing methods.
+```{r}
+sc1= ggplot2::ggplot(Data, aes(y=M.index, x=T.index, color=Taxa)) + 
+  geom_point(size=3) + 
+  ylab(expression("M-index")) + 
+  xlab(expression("T-index"))+
+  theme_classic()+
+  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
+sc1
+
+sc2= ggplot2::ggplot(Data, aes(y=pfT.index..C., x=pfT.index..A., color=Taxa)) + 
+  geom_point(size=2) + 
+  ylab(expression("pfT-index(C)")) + 
+  xlab(expression("pfT-index(A)"))+
+  theme_classic()+
+  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))+
+  geom_smooth(method=lm,se=FALSE)
+sc2
+```
+```{r playing with plots}
+ggarrange(sc1,                                            
+          ggarrange(p1,p2 , ncol = 2, labels = c("b", "c")),
+          ggarrange(p3,p4 , ncol = 2, labels = c("d", "e")),
+          nrow =3, 
+          labels = "a"                                        
+) 
+```
