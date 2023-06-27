@@ -104,7 +104,7 @@ models <- lapply(split(OtherAuthorConoData, OtherAuthorConoData$Author),
 
 Zhang <- models$`Zhang et al. 2017`$regression.results[models$`Zhang et al. 2017`$regression.results$Method=="RMA",]
 McMillan <- models$`McMillan & Golding 2019`$regression.results[models$`McMillan & Golding 2019`$regression.results$Method=="RMA",]
-Rantitsch <- models$`Rantitsch et al. 2023`$regression.results[models$`Rantitsch et al. 2023`$regression.results$Method=="RMA",]
+Rantitsch <- models$`Rantitsch et al. 2020`$regression.results[models$`Rantitsch et al. 2020`$regression.results$Method=="RMA",]
   
 ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Author)) + 
   geom_point(size=3)+
@@ -138,7 +138,7 @@ for (i in 1:length(models)) {
 }
 
 Slopes_RMA_CI <- cbind(slope, CI_slope, R_squared)
-rownames(Slopes_RMA_CI) <- c("McMillan & Golding 2019","Rantitsch et al. 2023","Shirley et al. 2023","Zhang et al. 2017")
+rownames(Slopes_RMA_CI) <- c("McMillan & Golding 2019","Rantitsch et al. 2020","Shirley et al. 2023","Zhang et al. 2017")
 
 
 utils::write.table(Slopes_RMA_CI, 
