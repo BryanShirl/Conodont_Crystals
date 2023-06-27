@@ -10,6 +10,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+|
 
 ```{r importing the data and setting up the libs,echo=FALSE}
 library(ggplot2)
@@ -69,20 +70,24 @@ ggpubr::ggarrange(p1, p2,p3,p4,
 Here we use scatter plots to compare the difference between the M-index and t-index 
 
 ```{r,echo=FALSE}
-sc1= ggplot2::ggplot(Data, aes(y=M.index, x=T.index, color=Taxa)) + 
+sc1= ggplot2::ggplot(Data, aes(y=M.index, x=T.index, color=Taxa, shape=Taxa)) + 
   geom_point(size=3) + 
   ylab(expression("M-index")) + 
   xlab(expression("T-index"))+
   theme_classic()+
-  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
+  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))+
+scale_shape_manual(values=c(4,15,16,17,18,25))+
+  geom_point(size=1.5,stroke = 1.5)
 sc1
 
-sc2= ggplot2::ggplot(Data, aes(y=pfT.index..C., x=pfT.index..A., color=Taxa)) + 
+sc2= ggplot2::ggplot(Data, aes(y=pfT.index..C., x=pfT.index..A., color=Taxa, shape=Taxa)) + 
   geom_point(size=2) + 
   ylab(expression("pfT-index(C)")) + 
   xlab(expression("pfT-index(A)"))+
   theme_classic()+
-  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
+  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))+
+scale_shape_manual(values=c(4,15,16,17,18,25))+
+  geom_point(size=1.5,stroke = 1.5)
 sc2
 
 ```
@@ -105,25 +110,25 @@ ggarrange(sc1,
 It appears that area does have an impact on the T-index values obtained, however the M-index does not have the resolution to decipher the differences between taxa. 
 
 ```{r comparing area vs indexes,echo=FALSE}
-area1 = ggplot2::ggplot(Data, aes(y=T.index, x=Area, color=Taxa)) + 
-  geom_point(size=2) + 
+ggplot2::ggplot(Data, aes(y=T.index, x=Area, color=Taxa, shape=Taxa)) + 
+  geom_point(size=1.5,stroke = 1.5) + 
   ylab(expression("T-index")) + 
   xlab(expression("Area"))+
   theme_classic()+
   geom_smooth(method=lm,se=FALSE,show.legend=TRUE)+
   theme(legend.position = "none")+
-  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
-
-area2 = ggplot2::ggplot(Data, aes(y=M.index, x=Area, color=Taxa)) + 
-  geom_point(size=2) + 
+  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))+
+  scale_shape_manual(values=c(4,15,16,17,18,25))
+  
+ggplot2::ggplot(Data, aes(y=M.index, x=Area, color=Taxa, shape=Taxa)) + 
+  geom_point(size=1.5,stroke = 1.5) + 
   ylab(expression("M-index")) + 
   xlab(expression("Area"))+
   theme_classic()+
   geom_smooth(method=lm,se=FALSE)+
   theme(legend.position = "none")+
-  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
+  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))+ scale_shape_manual(values=c(4,15,16,17,18,25))
 
-ggarrange(area1,area2, ncol = 2,nrow =1,  labels = c("a", "b"))
 ```
 
 ```{r ,echo=FALSE}
@@ -391,3 +396,4 @@ kable(MatrixM)
 
 ```
 ## How does misindexing effect the results?
+

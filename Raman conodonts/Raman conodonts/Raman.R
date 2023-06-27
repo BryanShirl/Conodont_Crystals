@@ -57,7 +57,7 @@ p3 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=Line,shape=Sample
 
 ## Combined plot of all our conodont data
 ggpubr::ggarrange(p,p1, p2, p3,
-              labels = c("A", "B", "C","D"),
+              labels = c("a", "b", "c","d"),
               ncol = 2, nrow = 2)
 
 #### Chapter 2: Plots of our data vs that of other authors####
