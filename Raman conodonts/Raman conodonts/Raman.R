@@ -32,8 +32,8 @@ p = ggplot2::ggplot(Specdata,aes(x=Spectra)) +
 p1 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=Sample.name, shape=Sample.name)) + 
   geom_point(size=3,stroke = 2) + 
   scale_shape_manual(values=c(4,15,16,17,18,25))+
-  ylab(expression("FWHM of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) + 
-  xlab(expression("PCMI of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
+  ylab(expression("FWHM of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) + 
+  xlab(expression("PCMI of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
   theme_classic()+
   scale_colour_manual(values=hcl.colors(n=6, palette = "Earth"))
 
@@ -41,8 +41,8 @@ p1 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=Sample.name, shap
 p2 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=CAI,shape=Sample.name)) + 
   geom_point(size=3,stroke = 2) + 
   scale_shape_manual(values=c(4,15,16,17,18,25)) + 
-  ylab(expression("FWHM of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+ 
-  xlab(expression("PCMI of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
+  ylab(expression("FWHM of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+ 
+  xlab(expression("PCMI of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
   theme_classic()+
   scale_colour_gradient(low = "#dcb37b", high = "#5e4a4b")
 
@@ -50,8 +50,8 @@ p2 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=CAI,shape=Sample.
 p3 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=Line,shape=Sample.name)) + 
   geom_point(size=3,stroke = 2) + 
   scale_shape_manual(values=c(4,15,16,17,18,25))+ 
-  ylab(expression("FWHM of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) + 
-  xlab(expression("PCMI of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
+  ylab(expression("FWHM of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) + 
+  xlab(expression("PCMI of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
   scale_colour_gradient(low = "#b6d7a8", high = "#3a4b48")+
   theme_classic()
 
@@ -67,8 +67,8 @@ ggpubr::ggarrange(p,p1, p2, p3,
 pa = ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Author)) + 
   geom_point(size=3) +
   theme_classic()+
-  ylab(expression("FWHM of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) +
-  xlab(expression("PCMI of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
+  ylab(expression("FWHM of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) +
+  xlab(expression("PCMI of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
   theme(legend.key.size = unit(0.4, 'cm')) +
   scale_shape_manual(values=c(16,15,17,18))+
   scale_color_manual(values=c("#8babf1", "#054fb9","#c44601", "#f57600"))+
@@ -82,8 +82,8 @@ pb = ggplot2::ggplot(ThomasTeethData, aes(y=FWHM, x=Peak, color=Name, shape=Loca
   theme_classic()+
   geom_point(size=5) + 
   scale_shape_manual(values=c(16,15,17,18))+
-  ylab(expression("FWHM of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) + 
-  xlab(expression("PCMI of v"[1]*"-(PO"[4]*") peak (cm"^-1*")")) +
+  ylab(expression("FWHM of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) + 
+  xlab(expression("PCMI of ν"[1]*"-(PO"[4]*") peak (cm"^-1*")")) +
   scale_color_manual(values=c('#EBDA69', '#fcd804', 'darkgray', '#61288A', '#7D33B2', '#AE74D7', '#C59CE2', '#DCC3EE', 
                                 '#C8DDDC',  '#4C9338', '#5FB846', '#7EC76A',
                                               "#9ED58F"))+
@@ -109,8 +109,8 @@ Rantitsch <- models$`Rantitsch et al. 2023`$regression.results[models$`Rantitsch
 ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Author)) + 
   geom_point(size=3)+
   theme_classic()+
-  ylab(expression("FWHM of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) +
-  xlab(expression("PCMI of v"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
+  ylab(expression("FWHM of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) +
+  xlab(expression("PCMI of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
   theme(legend.key.size = unit(0.4, 'cm')) +
   scale_shape_manual(values=c(16,15,17,18))+
   scale_color_manual(values=c("#8babf1", "#054fb9","#c44601", "#f57600"))+

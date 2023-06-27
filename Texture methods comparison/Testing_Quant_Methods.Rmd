@@ -71,7 +71,7 @@ Here we use scatter plots to compare the difference between the M-index and t-in
 
 ```{r,echo=FALSE}
 sc1= ggplot2::ggplot(Data, aes(y=M.index, x=T.index, color=Taxa, shape=Taxa)) + 
-  geom_point(size=3) + 
+  geom_point(size=2) + 
   ylab(expression("M-index")) + 
   xlab(expression("T-index"))+
   theme_classic()+
@@ -111,7 +111,7 @@ It appears that area does have an impact on the T-index values obtained, however
 
 ```{r comparing area vs indexes,echo=FALSE}
 ggplot2::ggplot(Data, aes(y=T.index, x=Area, color=Taxa, shape=Taxa)) + 
-  geom_point(size=1.5,stroke = 1.5) + 
+  geom_point(size=2,stroke = 1) + 
   ylab(expression("T-index")) + 
   xlab(expression("Area"))+
   theme_classic()+
@@ -121,13 +121,14 @@ ggplot2::ggplot(Data, aes(y=T.index, x=Area, color=Taxa, shape=Taxa)) +
   scale_shape_manual(values=c(4,15,16,17,18,25))
   
 ggplot2::ggplot(Data, aes(y=M.index, x=Area, color=Taxa, shape=Taxa)) + 
-  geom_point(size=1.5,stroke = 1.5) + 
+  geom_point(size=2,stroke = 1) + 
   ylab(expression("M-index")) + 
   xlab(expression("Area"))+
   theme_classic()+
   geom_smooth(method=lm,se=FALSE)+
   theme(legend.position = "none")+
-  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))+ scale_shape_manual(values=c(4,15,16,17,18,25))
+  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))+ 
+  scale_shape_manual(values=c(4,15,16,17,18,25))
 
 ```
 
