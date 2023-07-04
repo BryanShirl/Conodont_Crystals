@@ -119,7 +119,7 @@ ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Aut
   geom_abline(intercept = McMillan$Intercept, slope = McMillan$Slope, colour = "#8babf1")+
   geom_abline(intercept = Rantitsch$Intercept, slope = Rantitsch$Slope, colour = "#054fb9")
 
-# Exporting slope coefficients and their confidence intervals into a file
+#### Exporting slope coefficients and their confidence intervals into a file ####
 
 CI_slope <- data.frame()
 for (i in 1:length(models)) {
@@ -132,17 +132,24 @@ for (i in 1:length(models)) {
 }
 colnames(slope) <- "Slope"
 
-R_squared <- numeric()
+R_squared <- data.frame()
 for (i in 1:length(models)) {
   R_squared <- rbind(R_squared, models[[i]]$rsquare)
 }
+colnames(R_squared)<-"R_squared"
+
+
 
 Slopes_RMA_CI <- cbind(slope, CI_slope, R_squared)
 rownames(Slopes_RMA_CI) <- c("McMillan & Golding 2019","Rantitsch et al. 2020","Shirley et al. 2023","Zhang et al. 2017")
 
+Slopes_RMA_CI <- sapply(Slopes_RMA_CI,
+                        FUN = round,
+                        digits = 2,
+                        simplify = T)
 
 utils::write.table(Slopes_RMA_CI, 
-            file = "Slopes_RMA_CI",
+            file = "Slopes_RMA_CI.csv",
             sep = ",",
             col.names = TRUE)
             
