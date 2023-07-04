@@ -112,6 +112,7 @@ ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Aut
   ylab(expression("FWHM of the ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) +
   xlab(expression("PCMI of the ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
   theme(legend.key.size = unit(0.4, 'cm')) +
+  theme(legend.position = c(.85, .9), legend.text = element_text(size=12))+
   theme(axis.text=element_text(size=12),
         axis.title=element_text(size=14,face="bold"))+
   scale_shape_manual(values=c(16,15,17,18))+
