@@ -109,9 +109,11 @@ Rantitsch <- models$`Rantitsch et al. 2020`$regression.results[models$`Rantitsch
 ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Author)) + 
   geom_point(size=3)+
   theme_classic()+
-  ylab(expression("FWHM of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) +
-  xlab(expression("PCMI of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
+  ylab(expression("FWHM of the ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) +
+  xlab(expression("PCMI of the ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
   theme(legend.key.size = unit(0.4, 'cm')) +
+  theme(axis.text=element_text(size=12),
+        axis.title=element_text(size=14,face="bold"))+
   scale_shape_manual(values=c(16,15,17,18))+
   scale_color_manual(values=c("#8babf1", "#054fb9","#c44601", "#f57600"))+
   xlim(954,968)+
