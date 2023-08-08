@@ -109,9 +109,9 @@ Rantitsch <- models$`Rantitsch et al. 2020`$regression.results[models$`Rantitsch
 ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Author)) + 
   geom_point(size=3)+
   theme_classic()+
-  ylab(expression("FWHM of the ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) +
-  xlab(expression("PCMI of the ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
-  theme(legend.key.size = unit(0.4, 'cm')) +
+  ylab(expression("FWHM of the "*nu[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) +
+  xlab(expression("PCMI of the "*nu[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
+  theme(legend.key.size = unit(0.6, 'cm')) +
   theme(legend.position = c(.85, .9), legend.text = element_text(size=12))+
   theme(axis.text=element_text(size=12),
         axis.title=element_text(size=14,face="bold"))+
@@ -120,7 +120,11 @@ ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Aut
   xlim(954,968)+
   ylim(0,20)+
   geom_abline(intercept = McMillan$Intercept, slope = McMillan$Slope, colour = "#8babf1")+
-  geom_abline(intercept = Rantitsch$Intercept, slope = Rantitsch$Slope, colour = "#054fb9")
+  geom_abline(intercept = Rantitsch$Intercept, slope = Rantitsch$Slope, colour = "#054fb9")+
+ theme(text = element_text(family = "Open Sans"))
+
+require("svglite")
+ggsave("Raman_comparison_main_text.svg")
 
 #### Exporting slope coefficients and their confidence intervals into a file ####
 
@@ -144,12 +148,16 @@ colnames(R_squared)<-"R_squared"
 
 
 Slopes_RMA_CI <- cbind(slope, CI_slope, R_squared)
-rownames(Slopes_RMA_CI) <- c("McMillan & Golding 2019","Rantitsch et al. 2020","Shirley et al. 2023","Zhang et al. 2017")
 
 Slopes_RMA_CI <- sapply(Slopes_RMA_CI,
                         FUN = round,
                         digits = 2,
                         simplify = T)
+Slopes_RMA_CI <- cbind(c("McMillan & Golding 2019","Rantitsch et al. 2020","Shirley et al. 2023","Zhang et al. 2017"),
+                       Slopes_RMA_CI)
+colnames(Slopes_RMA_CI) <- c("Study",colnames(CI_slope), "Slope", "R_squared")
+
+Slopes_RMA_CI <- as.data.frame(Slopes_RMA_CI)
 
 utils::write.table(Slopes_RMA_CI, 
             file = "Slopes_RMA_CI.csv",
