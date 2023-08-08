@@ -30,9 +30,9 @@ setMTEXpref('xAxisDirection','east');
 setMTEXpref('zAxisDirection','intoPlane');
 % Specify File Names
 % path to files
-pname = ''; %Set your own directoryww
+pname = 'C:\Users\Shirl001\Documents\GitHub\Conodont_Crystals\EBSD data (ctf)'; %Set your own directoryww
 % which files to be imported
-fname = [pname 'Pro.ctf'];% Change to the ctf file you want
+fname = [pname '\B.ctf'];% Change to the ctf file you want
 % Import the Data
 % create an EBSD variable containing the data
 ebsd = EBSD.load(fname,CS,'interface','ctf',...
@@ -58,6 +58,7 @@ odfimp =calcDensity(ebsd.orientations,'halfwidth',hw*degree); %ODF calcutlation 
    plotPDF(odfimp,Miller({0,0,0,1},{1,1,-2,0},ebsd('Apatite').orientations.CS),'contourf') % Plotting the pole figures from said data set
 hold on
    mtexColorbar('location','southoutside') %Sets scale bar to be exported with the image
+   %% 
 hold off
 
 %% Step 4 Calculating texture index %%

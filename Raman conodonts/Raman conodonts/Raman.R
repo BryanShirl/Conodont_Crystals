@@ -15,12 +15,12 @@ ThomasTeethData = read.csv("../Data sets/Thomas Teeth vs Conos.csv")
 
 ## Plots our Raman data for all 6 conodonts
 p = ggplot2::ggplot(Specdata,aes(x=Spectra)) + 
-  geom_line(aes(y = Pro..muelleri), color = "#aecec5ff",linewidth =0.75,) +
-  geom_line(aes(y = Pan..equicostatus), color = "#cad5c1ff", linewidth =0.75,) +
-  geom_line(aes(y = W..excavata), color = "#bf9e66ff",linewidth =0.75,) +
-  geom_line(aes(y = B..cf..aculeatus), color = "#a36b2bff",linewidth =0.75,) +
-  geom_line(aes(y = Palmatolepis.sp.), color = "#dcd1a2ff",linewidth =0.75,) +
-  geom_line(aes(y = T..gracilis), color = "#2686a0ff",linewidth =0.75,) +
+  geom_line(aes(y = Pro..muelleri), color = "#a36b2bff",linewidth =0.75,) +
+  geom_line(aes(y = Pan..equicostatus), color = "#bf9e66ff", linewidth =0.75,) +
+  geom_line(aes(y = W..excavata), color = "#2686a0ff",linewidth =0.75,) +
+  geom_line(aes(y = B..cf..aculeatus), color = "#aecec5ff",linewidth =0.75,) +
+  geom_line(aes(y = Palmatolepis.sp.), color = "#cad5c1ff",linewidth =0.75,) +
+  geom_line(aes(y = T..gracilis), color = "#dcd1a2ff",linewidth =0.75,) +
   xlim(940,980)+
   ylim(6500,14000)+
   xlab(expression("Wavenumber (cm"^-1*")")) + 
@@ -35,7 +35,7 @@ p1 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=Sample.name, shap
   ylab(expression("FWHM of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) + 
   xlab(expression("PCMI of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
   theme_classic()+
-  scale_colour_manual(values=hcl.colors(n=6, palette = "Earth"))
+  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
 
 ## Plots our Raman data for all 6 conodonts (Color is CAI)
 p2 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=CAI,shape=Sample.name)) + 

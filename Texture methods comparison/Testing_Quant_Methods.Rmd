@@ -37,22 +37,25 @@ ggplot(data = Data, aes(x=reorder(Taxa,T.index), y=pfT.index..A.,fill=Taxa
   p1 = p1 +theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),axis.ticks.x=element_blank(),
                                  axis.title.x = element_blank())+
     ylab("T-index")+
-    scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
+    scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))+
+   theme(axis.title.y = element_text(size = rel(0.8)))
   
   p2 = p2 +theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),
                                  axis.ticks.x=element_blank(),axis.title.x = element_blank())+
     ylab("M-index")+
-    scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
+    scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))+
+  theme(axis.title.y = element_text(size = rel(0.8)))
   
   p3 = p3 + theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),
                                   axis.ticks.x=element_blank(),axis.title.x = element_blank())+
     ylab("pfT-index (C)")+
-    scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
-  
+    scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))+
+  theme(axis.title.y = element_text(size = rel(0.8)))
   p4 = p4 +theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),
                                  axis.ticks.x=element_blank(),axis.title.x = element_blank())+
     ylab("pfT-index (A)")+
-    scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
+    scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))+
+  theme(axis.title.y = element_text(size = rel(0.8)))
 ```
 
 ## All the methods.
@@ -67,6 +70,7 @@ ggpubr::ggarrange(p1, p2,p3,p4,
 
 ## Comparing methods.
 
+
 Here we use scatter plots to compare the difference between the M-index and t-index 
 
 ```{r,echo=FALSE}
@@ -77,7 +81,7 @@ sc1= ggplot2::ggplot(Data, aes(y=M.index, x=T.index, color=Taxa, shape=Taxa)) +
   theme_classic()+
   scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))+
 scale_shape_manual(values=c(4,15,16,17,18,25))+
-  geom_point(size=1.5,stroke = 1.5)
+  geom_point(size=1,stroke = 1)
 sc1
 
 sc2= ggplot2::ggplot(Data, aes(y=pfT.index..C., x=pfT.index..A., color=Taxa, shape=Taxa)) + 
@@ -98,10 +102,12 @@ This is just a combination plot of the above data.
 
 ```{r playing with plots,echo=FALSE}
 ggarrange(sc1,                                            
-          ggarrange(p1,p2 , ncol = 2, labels = c("b", "c")),
-          ggarrange(p3,p4 , ncol = 2, labels = c("d", "e")),
+          ggarrange(p1,p2 , ncol = 2, labels = c("b", "c"),font.label = list(size = 8, color = "black", face = "bold", family = NULL)),
+          ggarrange(p3,p4 , ncol = 2, labels = c("d", "e"),font.label = list(size = 8, color = "black", face = "bold", family = NULL)),
           nrow =3, 
-          labels = "a"                                        
+          labels = "a",
+          heights = c(2.2,1,1),
+          font.label = list(size = 8, color = "black", face = "bold", family = NULL)
 ) 
 ```
 
