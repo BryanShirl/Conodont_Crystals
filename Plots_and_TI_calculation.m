@@ -32,7 +32,7 @@ setMTEXpref('zAxisDirection','intoPlane');
 % path to files
 pname = 'C:\Users\Shirl001\Documents\GitHub\Conodont_Crystals\EBSD data (ctf)'; %Set your own directoryww
 % which files to be imported
-fname = [pname '\B.ctf'];% Change to the ctf file you want
+fname = [pname '\Pal.ctf'];% Change to the ctf file you want
 % Import the Data
 % create an EBSD variable containing the data
 ebsd = EBSD.load(fname,CS,'interface','ctf',...
@@ -87,6 +87,7 @@ hold off
     F = medianFilter;
     F.numNeighbours = 3;
     ebsd1 = ebsd %Used to reset the loop
+    plot(ebsd,ebsd.orientations)
 %% Runining the loop
     f = waitbar(0, 'Starting'); % Starts a progress bar 
     for r = 1:n
@@ -104,7 +105,8 @@ hold off
         yBottom = yCenter - height/2
             
         % Placement of the box and subsetting the EBSD data
-            %rec = rectangle('Position', [xLeft, yBottom, width, height], 'EdgeColor', 'b', 'LineWidth', 3);
+        %hold on
+        %rec = rectangle('Position', [xLeft, yBottom, width, height], 'EdgeColor', 'b', 'LineWidth', 3);
         ebsd = ebsd(inpolygon(ebsd,[xLeft, yBottom, width, height]));
 
         %pause(0.5)
@@ -135,66 +137,14 @@ hold off
                 MI = (sum((abs(density_uniform - uncorrelated_density_MDF))/2));
       
 %Not yet implimented in mtex but from 
-% Calculate pfTi for C axis
- h= Miller({0,0,0,1},ebsd('Apatite').orientations.CS);                
-       for i = 1:length(h)
-    pfg = calcPDF(odf, h(i));
-    if pfg.bandwidth ~=0
-    pfg_max(i) =  max(pfg);
-    else
-    pfg_max(i) =1;
-    end
-    pfTindex(i) = pfg.norm/sqrt(4*pi);
-    % calculate the multiplicity
-    m(i)=length(symmetrise(h(i)));
-end
- ebsd = ebsd1
-resolution = 1;
-reg = regularS2Grid('resolution', resolution *degree);
-[theta]= polar(reg);
-dr = (resolution.*degree).^2.*cos(resolution*degree)./4./pi;
-for i = 1:length(h)
-    pfg = calcPoleFigure(odf, h(i), reg,'complete');
-    pfg_max(i) =  max(pfg);
-    int =pfg.intensities;
-    int = reshape(int,size(reg));
-    pfTindex(i) = sqrt(sum(sum(dr.*sin(theta).*int.^2)));
-    % calculate the multiplicity
-    m(i)=length(symmetrise(h(i)));
-    %pfTindex_M(i) = m(i)*pfTindex(i);
-    pfTC = pfTindex
-end
+% Calculate pfTi for C and A axis
+h1= Miller({0,0,0,1},ebsd.orientations.CS);
+h2= Miller({1,1,-2,0},ebsd.orientations.CS);
+pfg1 = calcPDF(odf,h1);
+pfTC = (pfg1.norm).^2/sqrt(4*pi);
+pfg2 = calcPDF(odf,h2);
+pfTA = (pfg2.norm).^2/sqrt(4*pi);
 
-% Calculate pfTi for other axis
- ebsd = ebsd1
- h= Miller({1,1,-2,0},ebsd('Apatite').orientations.CS);                
-       for i = 1:length(h)
-    pfg = calcPDF(odf, h(i));
-    if pfg.bandwidth ~=0
-    pfg_max(i) =  max(pfg);
-    else
-    pfg_max(i) =1;
-    end
-    pfTindex(i) = pfg.norm/sqrt(4*pi);
-    % calculate the multiplicity
-    m(i)=length(symmetrise(h(i)));
-end
-
-resolution = 1;
-reg = regularS2Grid('resolution', resolution *degree);
-[theta]= polar(reg);
-dr = (resolution.*degree).^2.*cos(resolution*degree)./4./pi;
-for i = 1:length(h)
-    pfg = calcPoleFigure(odf, h(i), reg,'complete');
-    pfg_max(i) =  max(pfg);
-    int =pfg.intensities;
-    int = reshape(int,size(reg));
-    pfTindex(i) = sqrt(sum(sum(dr.*sin(theta).*int.^2)));
-    % calculate the multiplicity
-    m(i)=length(symmetrise(h(i)));
-    %pfTindex_M(i) = m(i)*pfTindex(i);
-    pfTA= pfTindex
-end
     clear reg
 
 

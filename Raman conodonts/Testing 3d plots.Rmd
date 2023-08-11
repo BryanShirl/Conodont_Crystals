@@ -1,0 +1,57 @@
+---
+title: "Untitled"
+author: "Bryan Shirley"
+date: "2023-08-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Here we play around with some 3D plots of the data
+
+You can also embed plots, for example:
+
+```{r}
+# library
+library(rgl)
+
+
+# Add a new column with color
+# Plot
+a=plot3d(  
+  x=Data$`pfT.index..C.`, y=Data$`pfT.index..A`, z=Data$`Area`, 
+  col = Data$Color, 
+  type = 's', 
+  radius = .7,
+  xlab="CpfT", ylab="ApfT", zlab="Area")
+
+# Add a new column with color
+# Plot
+b=plot3d( 
+  x=Data$`pfT.index..C.`, y=Data$`pfT.index..A`, z=Data$`T.index`, 
+  col = Data$Color, 
+  type = 's', 
+  radius = (Data$Area)/50,
+  xlab="CpfT", ylab="ApfT", zlab="T.index")
+a
+b
+```
+
+## Here we play around with some 3D plots of the data
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+library(plot3D)
+scatter3D(x=Data$`pfT.index..C.`, y=Data$`pfT.index..A`, z=Data$`Area`, bty = "g", pch = 18, 
+          col.var = as.integer(Data$Taxa), 
+          col = c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"),
+          pch = 18, ticktype = "detailed",
+          colkey = list(at = c(2, 3, 4), side = 1, 
+          addlines = TRUE, length = 0.5, width = 0.5))
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
