@@ -11,7 +11,7 @@ close all
 home
 %% Start up Mtex
 %Set WD to the path in which mtex is stored
-mtexpath = 'C:\Users\hohma004\Documents\Mtex'; %Set this to your own path to mtex
+mtexpath = ''; %Set this to your own path to mtex
 addpath(mtexpath)
 startup_mtex
 
@@ -30,7 +30,7 @@ setMTEXpref('xAxisDirection','east');
 setMTEXpref('zAxisDirection','intoPlane');
 % Specify File Names
 % path to files
-pname = 'C:\Users\Shirl001\Documents\GitHub\Conodont_Crystals\EBSD data (ctf)'; %Set your own directoryww
+pname = '\GitHub\Conodont_Crystals\EBSD data (ctf)'; %Set your own directoryww
 % which files to be imported
 fname = [pname '\Pal.ctf'];% Change to the ctf file you want
 % Import the Data
@@ -82,10 +82,6 @@ hold off
     n = 200; % number of random boxes you want to place
 %Set up an empty double to fill with outputs
     Tindex = nan(n,5);
-%Setting filter parameters. NOTE: does not filter by default, its
-%commented out in the below loop.
-    F = medianFilter;
-    F.numNeighbours = 3;
     ebsd1 = ebsd %Used to reset the loop
     plot(ebsd,ebsd.orientations)
 %% Runining the loop
@@ -109,12 +105,9 @@ hold off
         %rec = rectangle('Position', [xLeft, yBottom, width, height], 'EdgeColor', 'b', 'LineWidth', 3);
         ebsd = ebsd(inpolygon(ebsd,[xLeft, yBottom, width, height]));
 
-        %pause(0.5)
         %check if the data is more than 50 of fov. If not nan returned
         if length(ebsd(ebsd.phase==1)) > length(ebsd(ebsd.phase==0)) 
           
-        %Do we want the data smoothed? Tick this box
-        %ebsd = smooth(ebsd,F);
          
                 crys = Miller({0,0,0,1},{1,1,-2,0},ebsd.CS); %Setting miller index
                     ori = ebsd.orientations;

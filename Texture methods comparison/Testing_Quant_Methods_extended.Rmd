@@ -34,22 +34,22 @@ ggplot(data = Data, aes(x=reorder(Taxa,T.index), y=pfT.index..A.,fill=Taxa
 )) + geom_boxplot()
   
   p1 = p1 +theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),axis.ticks.x=element_blank(),
-                                 axis.title.x = element_blank())+
+                                 axis.title.x = element_blank(),axis.title.y = element_text(size=9))+
     ylab("T-index")+
     scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
-  
+
   p2 = p2 +theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),
-                                 axis.ticks.x=element_blank(),axis.title.x = element_blank())+
+                                 axis.ticks.x=element_blank(),axis.title.x = element_blank(),axis.title.y = element_text(size=9))+
     ylab("M-index")+
     scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
   
   p3 = p3 + theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),
-                                  axis.ticks.x=element_blank(),axis.title.x = element_blank())+
+                                  axis.ticks.x=element_blank(),axis.title.x = element_blank(),axis.title.y = element_text(size=9))+
     ylab("pfT-index (C)")+
     scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
   
   p4 = p4 +theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),
-                                 axis.ticks.x=element_blank(),axis.title.x = element_blank())+
+                                 axis.ticks.x=element_blank(),axis.title.x = element_blank(),axis.title.y = element_text(size=9))+
     ylab("pfT-index (A)")+
     scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
 ```
@@ -100,7 +100,8 @@ ggarrange(sc1,
           ggarrange(p1,p2 , ncol = 2, labels = c("b", "c")),
           ggarrange(p3,p4 , ncol = 2, labels = c("d", "e")),
           nrow =3, 
-          labels = "a"                                        
+          labels = "a"   ,      
+          heights = c(1.8, 1,1)
 ) 
 ```
 
