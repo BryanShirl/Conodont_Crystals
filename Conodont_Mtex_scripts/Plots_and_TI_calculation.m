@@ -27,12 +27,12 @@ CS = {...
   crystalSymmetry('6/m', [9.4 9.4 6.9], 'X||a*', 'Y||b', 'Z||c*', 'mineral', 'Apatite', 'color', [0.53 0.81 0.98])};
 % plotting convention
 setMTEXpref('xAxisDirection','east');
-setMTEXpref('zAxisDirection','intoPlane');
+setMTEXpref('zAxisDirection','outofPlane');
 % Specify File Names
 % path to files
-pname = '\GitHub\Conodont_Crystals\EBSD data (ctf)'; %Set your own directoryww
+pname = 'C:\Users\Shirl001\Documents\GitHub\Conodont_Crystals\EBSD data (ctf)'; %Set your own directoryww
 % which files to be imported
-fname = [pname '\Pal.ctf'];% Change to the ctf file you want
+fname = [pname '\Pan.ctf'];% Change to the ctf file you want
 % Import the Data
 % create an EBSD variable containing the data
 ebsd = EBSD.load(fname,CS,'interface','ctf',...
