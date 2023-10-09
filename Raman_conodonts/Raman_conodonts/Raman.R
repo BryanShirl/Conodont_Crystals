@@ -1,8 +1,5 @@
 library(ggplot2)
-library(scales)
-library(rlang)
 library(ggpubr)
-library(plyr)
 library(lmodel2)
 
 OurConodontData = read.csv("../Datasets/Shirley_et_al_Raman_01.csv")
@@ -123,7 +120,7 @@ ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Aut
   geom_abline(intercept = Rantitsch$Intercept, slope = Rantitsch$Slope, colour = "#054fb9")+
  theme(text = element_text(family = "Open Sans"))
 
-require("svglite")
+
 ggsave("Raman_comparison_main_text.svg")
 
 #### Exporting slope coefficients and their confidence intervals into a file ####
