@@ -1,0 +1,67 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  Code for "Increasing control or biomineralization in
+  conodont evolution"
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Bryan
+    family-names: Shirley
+    email: b.o.shirley@uu.nl
+    affiliation: Utrecht University
+  - given-names: Isabella
+    family-names: Leonhard
+    email: isabella.leonhard@univie.ac.at
+    affiliation: Vienna University
+  - given-names: Duncan
+    family-names: Murdock
+    affiliation: 'Oxford University Museum of Natural History '
+    email: duncan.murdock@oum.ox.ac.uk
+  - given-names: John
+    family-names: Repetski
+    affiliation: US Geological Survey
+  - given-names: Przemysław
+    family-names: Świś
+    affiliation: University of Warsaw
+  - given-names: Michel
+    family-names: Bestmann
+    affiliation: Vienna University
+  - given-names: Pat
+    family-names: Trimby
+    affiliation: Oxford Instruments
+  - given-names: Markus
+    family-names: Ohl
+    affiliation: Utrecht University
+  - given-names: Oliver
+    family-names: Plümper
+    affiliation: Utrecht University
+    email: o.plumper@uu.nl
+  - given-names: Helen
+    family-names: King
+    email: h.e.king@uu.nl
+    affiliation: Utrecht University
+  - given-names: Emilia
+    family-names: Jarochowska
+    email: e.b.jarochowska@uu.nl
+    affiliation: Utrecht University
+    orcid: 'https://orcid.org/0000-0001-8937-9405'
+repository-code: 'https://github.com/BryanShirl/Conodont_Crystals'
+abstract: "Code associated with the article \"Increasing control or biomineralization in conodont evolution\". It includes import, cleaning and plotting of EBSD datasets collected in bioapatite in the teeth of conodonts (fossil vertebrates). Texture Index, M-index and pole figure J index are calculated. The R code includes plotting and comparison of the positions of the \U0001D7081-PO43− band in bioapatite."
+keywords:
+  - EBSD
+  - Raman
+  - MTEX
+  - fossil
+  - bioapatite
+  - apatite
+  - biomineralization
+  - Texture Index
+  - crystallography
+  - pole figure
+  - crystallographic texture
+license: Apache-2.0
