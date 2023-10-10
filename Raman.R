@@ -1,11 +1,22 @@
+install.packages(setdiff(c("ggplot2", "ggpubr", "lmodel2", "reticulate"), rownames(installed.packages())))  
+
 library(ggplot2)
 library(ggpubr)
 library(lmodel2)
 
-OurConodontData = read.csv("../Datasets/Shirley_et_al_Raman_01.csv")
-Specdata = read.csv("../Datasets/Shirley_et_al_Raman_03.csv")
-OtherAuthorConoData = read.csv("../Datasets/Shirley_et_al_Raman_02.csv")
-ThomasTeethData = read.csv("../Datasets/Shirley_et_al_Raman_04.csv")
+#### Download data from OSF ####
+# Requires calling the python package Datahugger
+
+library(reticulate)
+py_install("datahugger")
+dh <- import("datahugger")
+dh$get("https://osf.io/d7j69/", "data")
+dh$tree()
+
+OurConodontData = read.csv("data/Shirley_et_al_Raman_01.csv")
+Specdata = read.csv("data/Shirley_et_al_Raman_03.csv")
+OtherAuthorConoData = read.csv("data/Shirley_et_al_Raman_02.csv")
+ThomasTeethData = read.csv("data/Shirley_et_al_Raman_04.csv")
 
 
 #### Chapter 1 : plots of our data ####
