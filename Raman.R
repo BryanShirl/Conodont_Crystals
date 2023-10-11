@@ -1,14 +1,22 @@
+install.packages(setdiff(c("ggplot2", "ggpubr", "lmodel2", "reticulate"), rownames(installed.packages())))  
+
 library(ggplot2)
-library(scales)
-library(rlang)
 library(ggpubr)
-library(plyr)
 library(lmodel2)
 
-OurConodontData = read.csv("../Datasets/Shirley_et_al_Raman_01.csv")
-Specdata = read.csv("../Datasets/Shirley_et_al_Raman_03.csv")
-OtherAuthorConoData = read.csv("../Datasets/Shirley_et_al_Raman_02.csv")
-ThomasTeethData = read.csv("../Datasets/Shirley_et_al_Raman_04.csv")
+#### Download data from OSF ####
+# Requires calling the python package Datahugger
+
+library(reticulate)
+py_install("datahugger")
+dh <- import("datahugger")
+dh$get("https://osf.io/d7j69/", "data")
+dh$tree()
+
+OurConodontData = read.csv("data/Shirley_et_al_Raman_01.csv")
+Specdata = read.csv("data/Shirley_et_al_Raman_03.csv")
+OtherAuthorConoData = read.csv("data/Shirley_et_al_Raman_02.csv")
+ThomasTeethData = read.csv("data/Shirley_et_al_Raman_04.csv")
 
 
 #### Chapter 1 : plots of our data ####
@@ -123,7 +131,7 @@ ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Aut
   geom_abline(intercept = Rantitsch$Intercept, slope = Rantitsch$Slope, colour = "#054fb9")+
  theme(text = element_text(family = "Open Sans"))
 
-require("svglite")
+
 ggsave("Raman_comparison_main_text.svg")
 
 #### Exporting slope coefficients and their confidence intervals into a file ####
