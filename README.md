@@ -7,7 +7,7 @@ Utrecht University
 Formerly: Fachgruppe Paläoumwelt, Friedrich-Alexander-Universität Erlangen-Nürnberg   
 email: b.o.shirley [at] uu.nl   
 Web page: [www.uu.nl/staff/EBJarochowska](https://www.uu.nl/staff/BOShirley)   
-ORCID:    
+ORCID: [0000-0002-8532-3890](https://orcid.org/0000-0002-8532-3890)   
 
 __Isabella Leonhard__   
 Department of Palaeontology, Universität Wien  
