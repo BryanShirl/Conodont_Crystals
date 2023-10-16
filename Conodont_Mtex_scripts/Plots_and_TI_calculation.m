@@ -30,9 +30,9 @@ setMTEXpref('xAxisDirection','east');
 setMTEXpref('zAxisDirection','outofPlane');
 % Specify File Names
 % path to files
-pname = 'C:\Users\Shirl001\Documents\GitHub\Conodont_Crystals\EBSD data (ctf)'; %Set your own directoryww
+pname = ''; %Set your own directoryww
 % which files to be imported
-fname = [pname '\Pan.ctf'];% Change to the ctf file you want
+fname = [pname '\'];% Change to the ctf file you want
 % Import the Data
 % create an EBSD variable containing the data
 ebsd = EBSD.load(fname,CS,'interface','ctf',...

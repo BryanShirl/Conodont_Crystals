@@ -1,22 +1,34 @@
-install.packages(setdiff(c("ggplot2", "ggpubr", "lmodel2", "reticulate"), rownames(installed.packages())))  
+install.packages(setdiff(c("ggplot2", "ggpubr", "lmodel2", "reticulate","osfr"), rownames(installed.packages())))  
 
 library(ggplot2)
 library(ggpubr)
 library(lmodel2)
-
+library(osfr)
 #### Download data from OSF ####
-# Requires calling the python package Datahugger
 
-library(reticulate)
-py_install("datahugger")
-dh <- import("datahugger")
-dh$get("https://osf.io/d7j69/", "data")
-dh$tree()
+get_data_from_osf = function(link){
+  #' 
+  #' @title download data from osf
+  #' 
+  #' @param link url to the (public) url
+  #' 
+  #' @return invisible NULL
+  
+  my_project <- osfr::osf_retrieve_node(link)
+  
+  my_files <- osfr::osf_ls_files(my_project)
+  
+  osfr::osf_download(my_files)
+  
+  return(invisible())
+}
 
-OurConodontData = read.csv("data/Shirley_et_al_Raman_01.csv")
-Specdata = read.csv("data/Shirley_et_al_Raman_03.csv")
-OtherAuthorConoData = read.csv("data/Shirley_et_al_Raman_02.csv")
-ThomasTeethData = read.csv("data/Shirley_et_al_Raman_04.csv")
+get_data_from_osf(link = "https://osf.io/d7j69/")
+
+OurConodontData = read.csv("Shirley_et_al_Raman_01.csv")
+Specdata = read.csv("Shirley_et_al_Raman_03.csv")
+OtherAuthorConoData = read.csv("Shirley_et_al_Raman_02.csv")
+ThomasTeethData = read.csv("Shirley_et_al_Raman_04.csv")
 
 
 #### Chapter 1 : plots of our data ####

@@ -7,10 +7,23 @@
 % figures/inverse pole figures to help visualize the data.
 % 
 % 
-
 % First step is to clear up the workspace.
 close all;
 clear all;
+%%
+CurPath = matlab.desktop.editor.getActiveFilename;
+fprintf('%s\n',CurPath);
+%% Now download the data from OSF
+% URL of the file to be downloaded 
+url = 'https://files.de-1.osf.io/v1/resources/m26qa/providers/osfstorage/652d32c72827450630b86723/?zip='; 
+% Specify the local path where you want to save the downloaded file 
+WD = fileparts(CurPath)
+filename = 'EBSD_data.zip';
+ZipPath = fullfile(WD, filename);
+% Use websave to download the file 
+websave(ZipPath,url); 
+unzip('EBSD_data.zip',WD)
+
 
 %% 
 % 
@@ -24,7 +37,7 @@ pfAnnotations = @(varargin) text([vector3d.X,vector3d.Y],{'  X','  Y'},...
 pfAnnotations = @(varargin) [];
 setMTEXpref('pfAnnotations',pfAnnotations); 
 
-pname = 'C:\Users\Shirl001\Desktop\Raw data sets';
+pname = WD;
 load('Trip_Poly.mat');
 load('Trip_ebsd.mat');
 load('Pan_Poly.mat');
