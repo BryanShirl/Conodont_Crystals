@@ -1,5 +1,5 @@
 
-% Code associated with the publication "Quanitifying conodont crystals" by
+% Code associated with the publication "Increasing control over biomineralization in conodont evolution"
 % Tested and running in Mtex v5.7.0 MATLAB R2021b
 
 %% Step 1 get Mtex up and running %%

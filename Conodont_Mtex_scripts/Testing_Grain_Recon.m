@@ -1,26 +1,24 @@
+% Code associated with the publication "Increasing control over biomineralization in conodont evolution"
+% Tested and running in Mtex v5.7.0 MATLAB R2021b
+%% Clean up workspace %%
 clear
 close all
 home
-%%
-
-%% Specify Directories and download sample data from OSF
-CurPath = matlab.desktop.editor.getActiveFilename;
+%% Specify Directories and download sample data from OSF %%
+%Finds the current work path where .m is stored
+CurPath = matlab.desktop.editor.getActiveFilename; 
 fprintf('%s\n',CurPath);
-
 % URL of the file to be downloaded 
 url = 'https://osf.io/download/5sw9z/'; 
 % Specify the local path where you want to save the downloaded file 
-WD = fileparts(CurPath)
+WD = fileparts(CurPath);
 filename = 'GrainTestData.ctf';
 SavePath = fullfile(WD, filename);
 % Use websave to download the file 
 websave(SavePath,url);
 fname = [WD '\GrainTestData.ctf'];
 
-
-
-
-%% Import the Data
+%% Import the EBSD data %%
 CS = {... 
   'notIndexed',...
   crystalSymmetry('6/m', [9.4 9.4 6.9], 'X||a*', 'Y||b', 'Z||c*', 'mineral', 'Apatite', 'color', [0.53 0.81 0.98])};
@@ -33,16 +31,13 @@ setMTEXpref('zAxisDirection','intoPlane');
 ebsd = EBSD.load(fname,CS,'interface','ctf',...
   'convertEuler2SpatialReferenceFrame');
 
-
-%%
- 
+%% Running grain reconstruction for different misorientaions %%
 n=20
 ebsd1 = ebsd
-
-%%
-reconstructed = struct()
-reconGrains = struct()
-
+reconstructed = struct() %Empty struct for EBSD data
+reconGrains = struct() %Empty struct for Grain data
+%Loop to run grain reconstruction for each degree from 1-20 and save to
+%struct for plotting
 for r = 1:n
 ebsd = ebsd1
 [grains,ebsd.grainId,ebsd.mis2mean] = calcGrains(ebsd, 'angle', r*degree, "boundary", "tight");
@@ -54,9 +49,14 @@ end
 
 
 
-%%
-close all
+%% Plotting the results %%
+% The following code contains three loops that plot the EBSD data in
+% various ways
+% Loop one is for band contrast vs grain bounderies
+% Loop two plots EBSD orientations vs grain bounderies 
+% Loop three plots EBSD orientations with filled grains.
 
+close all
 mtexFig = newMtexFigure('layout',[1,5]);
 
 for r = 1:4:20
