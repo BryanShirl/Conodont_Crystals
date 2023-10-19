@@ -28,12 +28,12 @@ unzip('EBSD_data.zip',WD)
 %% 
 % 
 
-%Setting up specific plotting atetics for consistant plotting later in the code.
+%Setting up specific plotting aestetics for consistent plotting later in the code.
 setMTEXpref('defaultColorMap',WhiteJetColorMap)
 % set pole figure annotation
 pfAnnotations = @(varargin) text([vector3d.X,vector3d.Y],{'  X','  Y'},...
   'BackgroundColor','w','tag','axesLabels',varargin{:});
-% following line to disables the annotations
+% following line to disable the annotations
 pfAnnotations = @(varargin) [];
 setMTEXpref('pfAnnotations',pfAnnotations); 
 
@@ -46,7 +46,7 @@ load('Pro_Poly.mat');
 % 1.0 Rotation Crop and Plotting of _Proconodontus muelleri_  (Overview of process)
 % First step is to import the specific data that we wish to look at.
 
-%%%%%%%%%% Pro %%%%%%%%%%
+%%%%%%%%%% Proconodontus muelleri %%%%%%%%%%
 CS = {... 
   'notIndexed',...
   crystalSymmetry('6/m', [9.4 9.4 6.9], 'X||a*', 'Y||b', 'Z||c*', 'mineral', 'Apatite', 'color', [0.53 0.81 0.98]),...
@@ -110,7 +110,7 @@ cs = crystalSymmetry('6/m')
 ori = ebsd.orientations
 r = vector3d.Z
 %% 
-% Here are the orientations by axis observed. From left to right is the x,y,z 
+% Here are the orientations by axis observed. From left to right are the x,y,z 
 % planes.
 
 plotIPDF(ori,[vector3d.X,vector3d.Y,vector3d.Z])
@@ -172,7 +172,7 @@ hold off
 
 % Rotation Crop and Plotting of _Panderodus equicostatus_ 
 
-%%%%%%%%%% Pan %%%%%%%%%%
+%%%%%%%%%% Panderodus equicostatus %%%%%%%%%%
 CS = {... 
   'notIndexed',...
   crystalSymmetry('6/m', [9.4 9.4 6.9], 'X||a*', 'Y||b', 'Z||c*', 'mineral', 'Apatite', 'color', [0.53 0.81 0.98]),...
@@ -256,7 +256,7 @@ hold off
 
 % Rotation Crop and Plotting of _Wurmiella excavata_ 
 
-%%%%%%%%%% Excavata %%%%%%%%%%
+%%%%%%%%%% Wurmiella excavata %%%%%%%%%%
 CS = {... 
   'notIndexed',...
   crystalSymmetry('6/m', [9.4 9.4 6.9], 'X||a*', 'Y||b', 'Z||c*', 'mineral', 'Apatite', 'color', [0.53 0.81 0.98])};
@@ -335,9 +335,9 @@ text(vector3d.Y,'Y','VerticalAlignment','top')
 hold on
    mtexColorbar('location','southoutside')
 hold off
-% Rotation Crop and Plotting of Trip
+% Rotation Crop and Plotting of Tripodellus sp.
 
-%%%%%%%%%% Trip %%%%%%%%%%
+%%%%%%%%%% Tripodellus sp. %%%%%%%%%%
 ebsd = Trip_ebsd 
 plot(ebsd,ebsd.orientations)
 plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
@@ -404,9 +404,9 @@ text(vector3d.Y,'Y','VerticalAlignment','top')
 hold on
    mtexColorbar('location','southoutside')
 hold off
-% Rotation Crop and Plotting of Pal
+% Rotation Crop and Plotting of Palmatolepis sp.
 
-%%%%%%%%%% Palmat %%%%%%%%%%
+%%%%%%%%%% Palmatolepis sp. %%%%%%%%%%
 CS = {... 
   'notIndexed',...
   crystalSymmetry('6/m', [9.5 9.5 6.8], 'X||a*', 'Y||b', 'Z||c*', 'mineral', 'Apatite', 'color', [0.53 0.81 0.98]),...
@@ -498,7 +498,8 @@ text(vector3d.Y,'Y','VerticalAlignment','top')
 hold on
    mtexColorbar('location','southoutside')
 hold off
-% Rotation Crop and Plotting of Bispathodus
+
+% Rotation Crop and Plotting of Bispathodus cf. aculeatus
 
 ebsd = ebsdr
 %%
@@ -594,7 +595,7 @@ load('Pan_Poly.mat');
 load('Pal_Poly.mat');
 load('Pro_Poly.mat');
 load('Bispa_poly.mat');
-% Rotation Crop and Plotting of Proconodont
+% Rotation Crop and Plotting of Proconodontus
 
 %%%%%%%%%% Pro %%%%%%%%%%
 CS = {... 
