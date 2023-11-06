@@ -15,7 +15,29 @@ knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(ggpubr)
 library(knitr)
-Data = read.csv("../Texture methods comparison/TextureResultsNew.csv", header = T, sep=';')
+#### Download data from OSF ####
+
+get_data_from_osf = function(link){
+  #' 
+  #' @title download data from osf
+  #' 
+  #' @param link url to the (public) url
+  #' 
+  #' @return invisible NULL
+  
+  my_project <- osfr::osf_retrieve_node(link)
+  
+  my_files <- osfr::osf_ls_files(my_project)
+  
+  osfr::osf_download(my_files)
+  
+  return(invisible())
+}
+
+get_data_from_osf(link = "https://osf.io/vnq6s/")
+##
+Data = read.csv("TextureResults.csv",header = T, sep=';')
+
 ```
 
 ```{r Setting up the box plots,echo=FALSE}
@@ -131,34 +153,6 @@ ggplot2::ggplot(Data, aes(y=M.index, x=Area, color=Taxa, shape=Taxa)) +
   scale_shape_manual(values=c(4,15,16,17,18,25))
 
 ```
-## Here we play around with some 3D plots of the data
-
-You can also embed plots, for example:
-
-```{r}
-# library
-library(rgl)
-
-
-# Add a new column with color
-# Plot
-a=plot3d( 
-  x=Data$`pfT.index..C.`, y=Data$`pfT.index..A`, z=Data$`Area`, 
-  col = Data$Color, 
-  type = 's', 
-  radius = .7,
-  xlab="CpfT", ylab="ApfT", zlab="Area")
-
-# Add a new column with color
-# Plot
-b=plot3d( 
-  x=Data$`pfT.index..C.`, y=Data$`pfT.index..A`, z=Data$`T.index`, 
-  col = Data$Color, 
-  type = 's', 
-  radius = (Data$Area)/50,
-  xlab="CpfT", ylab="ApfT", zlab="T.index")
-a
-b
 ```
 
 ```{r ,echo=FALSE}
@@ -425,29 +419,3 @@ kable(Matrix)
 kable(MatrixM)
 
 ```
-## How does misindexing effect the results?
-
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
