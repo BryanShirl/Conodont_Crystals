@@ -9,3 +9,7 @@ Raman\ conodonts/Raman\ conodonts/Slopes_RMA_CI
 *.Rhistory
 *.pdf
 .Rproj.user
+*.cpr
+*.mat
+*.crc
+*.zip
