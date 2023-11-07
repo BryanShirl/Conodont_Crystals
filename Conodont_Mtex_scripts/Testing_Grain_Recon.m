@@ -57,7 +57,7 @@ end
 % Loop three plots EBSD orientations with filled grains.
 
 close all
-mtexFig = newMtexFigure('layout',[1,5]);
+mtexFig = newMtexFigure('layout',[3,5]);
 
 for r = 1:4:20
 ebsd = reconstructed(r).ebsd
@@ -66,7 +66,7 @@ plot(ebsd,ebsd.bc)
 colormap gray
 title (sprintf('%d°',r),'FontSize', 10)
 hold on
-plot(grains.boundary,'linewidth',0.4)
+plot(grains.boundary,'linewidth',0.8)
 hold off
 nextAxis
 end
@@ -78,7 +78,7 @@ plot(ebsd,ebsd.orientations)
 colormap gray
 title (sprintf('%d°',r),'FontSize', 10)
 hold on
-plot(grains.boundary,'linewidth',0.4)
+plot(grains.boundary,'linewidth',0.8)
 hold off
 nextAxis
 end
@@ -90,7 +90,7 @@ ebsdSub_filled = fill(ebsd, grains);
 plot(ebsdSub_filled,ebsdSub_filled.orientations);
 title (sprintf('%d°',r),'FontSize', 10)
 hold on
-plot(grains.boundary,'linewidth',0.4)
+plot(grains.boundary,'linewidth',0.8)
 hold off
 nextAxis
 end

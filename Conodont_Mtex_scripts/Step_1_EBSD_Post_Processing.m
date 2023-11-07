@@ -61,7 +61,6 @@ ebsd = EBSD.load(fname,CS,'interface','crc',...
   'convertEuler2SpatialReferenceFrame');
 %% 
 % As our data has two different phases, here we combine them into one and plot.
-
 ebsd(ebsd.phase==2).phase = 1;
 plot(ebsd,ebsd.orientations)
 ebsd= ebsd('indexed')
@@ -123,11 +122,13 @@ plot(ebsd, colors)
 figure;
 plot(ipfKey)
 hold on
-plotIPDF(ori,vector3d.X,'MarkerSize',2,'MarkerFaceColor','none','MarkerEdgeColor','black','points',1000)
+plotIPDF(ori,vector3d.X,'MarkerSize',2,'MarkerFaceColor','none','MarkerEdgeColor','black','points',2000)
 hold off
+%%
 ipfKey = ipfHSVKey(ebsd);
 ipfKey.inversePoleFigureDirection = vector3d.Z;
 colors = ipfKey.orientation2color(ori)
+figure; plot(ebsd, colors)
 %% 
 % Here is the same EBSD colored by inverse pole figure in the Z Direction. 
 
@@ -343,7 +344,9 @@ hold on
 plot(pgon)
 hold off
 %%
-TestData = ebsd(inpolygon(ebsd,Trip_Poly))
+rot = rotation.byAxisAngle(xvector,90*degree);
+ebsdr = rotate(ebsd,rot,'keepXY');
+TestData = ebsdr(inpolygon(ebsdr,Trip_Poly))
 figure;
 plot(TestData)
 %%
@@ -356,9 +359,10 @@ plotIPDF(ori,[vector3d.X,vector3d.Y,vector3d.Z])
 %%
 ebsd=ebsd("indexed")
 ipfKey = ipfHSVKey(ebsd);
-ipfKey.inversePoleFigureDirection = vector3d.X;
+ipfKey.inversePoleFigureDirection = vector3d.Z;
 colors = ipfKey.orientation2color(ori)
 plot(ebsd, colors)
+%%
 figure;
 plot(ipfKey)
 hold on
@@ -425,10 +429,12 @@ plot(ebsd,ebsd.orientations)
 plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
 ebsd1 = ebsd
 %%
-ebsd = ebsd1
 ebsdr = rotate(ebsd,rotation.byAxisAngle(zvector,-150*degree))
 plot(ebsdr,ebsdr.orientations)
 plotPDF(ebsdr.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
+%%
+rot = rotation.byAxisAngle(xvector,90*degree);
+ebsdr = rotate(ebsdr,rot,'keepXY');
 %%
 pgon = polyshape(Pal_Poly)
 plot(ebsdr,ebsdr.orientations)
@@ -440,7 +446,6 @@ TestData = ebsdr(inpolygon(ebsdr,Pal_Poly))
 figure;
 plot(TestData)
 %%
-%%
 ebsd = TestData
 %%
 cs = crystalSymmetry('6/m')
@@ -450,7 +455,7 @@ plotIPDF(ori,[vector3d.X,vector3d.Y,vector3d.Z])
 %%
 ebsd=ebsd("indexed")
 ipfKey = ipfHSVKey(ebsd);
-ipfKey.inversePoleFigureDirection = vector3d.X;
+ipfKey.inversePoleFigureDirection = vector3d.Y;
 colors = ipfKey.orientation2color(ori)
 plot(ebsd, colors)
 figure;
@@ -515,6 +520,8 @@ ebsd1 = ebsd
 ebsdr = rotate(ebsd,rotation.byAxisAngle(zvector,190*degree))
 plot(ebsdr,ebsdr.orientations)
 plotPDF(ebsdr.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsdr.orientations.CS),'contourf')
+rot = rotation.byAxisAngle(xvector,90*degree);
+ebsdr = rotate(ebsdr,rot,'keepXY');
 
 %%
 pgon = polyshape(Bispa_poly)
