@@ -6,22 +6,7 @@ library(lmodel2)
 library(osfr)
 #### Download data from OSF ####
 
-get_data_from_osf = function(link){
-  #' 
-  #' @title download data from osf
-  #' 
-  #' @param link url to the (public) url
-  #' 
-  #' @return invisible NULL
-  
-  my_project <- osfr::osf_retrieve_node(link)
-  
-  my_files <- osfr::osf_ls_files(my_project)
-  
-  osfr::osf_download(my_files)
-  
-  return(invisible())
-}
+source("get_data_from_osf.R")
 
 get_data_from_osf(link = "https://osf.io/d7j69/")
 
@@ -132,7 +117,7 @@ ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Aut
   ylab(expression("FWHM of the "*nu[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) +
   xlab(expression("PCMI of the "*nu[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
   theme(legend.key.size = unit(0.6, 'cm')) +
-  theme(legend.position = c(.85, .9), legend.text = element_text(size=12))+
+  theme(legend.position = c(.82, .86), legend.text = element_text(size=12))+
   theme(axis.text=element_text(size=12),
         axis.title=element_text(size=14,face="bold"))+
   scale_shape_manual(values=c(16,15,17,18))+
@@ -144,7 +129,8 @@ ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Aut
  theme(text = element_text(family = "Open Sans"))
 
 
-ggsave("Raman_comparison_main_text.svg")
+ggplot2::ggsave(filename = "Raman_comparison_main_text.png",
+                dpi = 300)
 
 #### Exporting slope coefficients and their confidence intervals into a file ####
 

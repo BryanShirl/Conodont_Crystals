@@ -13,3 +13,5 @@ Raman\ conodonts/Raman\ conodonts/Slopes_RMA_CI
 *.mat
 *.crc
 *.zip
+# Files with data downloaded from OSF
+*.csv
