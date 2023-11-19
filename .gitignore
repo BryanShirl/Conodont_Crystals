@@ -15,3 +15,8 @@ Raman\ conodonts/Raman\ conodonts/Slopes_RMA_CI
 *.zip
 # Files with data downloaded from OSF
 *.csv
+
+# Files in the subfolder
+Texture methods comparison/.Rmd
+Texture methods comparison/.Rhistory
+Texture methods comparison/.RData

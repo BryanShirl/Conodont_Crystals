@@ -1,46 +1,26 @@
 ---
-title: "Testing quant methods extended"
-author: "Bryan Shirley"
-date: "2023-08-11"
-output: html_document
+title: "Testing metrics for crystallographic order"
+author: "Bryan Shirley, with edits by Emilia Jarochowska"
+date: "2023-11-19"
+output: github_document
 ---
 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
-|
-
-```{r importing the data and setting up the libs,echo=FALSE}
 library(ggplot2)
 library(ggpubr)
 library(knitr)
-#### Download data from OSF ####
-
-get_data_from_osf = function(link){
-  #' 
-  #' @title download data from osf
-  #' 
-  #' @param link url to the (public) url
-  #' 
-  #' @return invisible NULL
-  
-  my_project <- osfr::osf_retrieve_node(link)
-  
-  my_files <- osfr::osf_ls_files(my_project)
-  
-  osfr::osf_download(my_files)
-  
-  return(invisible())
-}
-
-get_data_from_osf(link = "https://osf.io/vnq6s/")
-##
-Data = read.csv("TextureResults.csv",header = T, sep=';')
-
 ```
 
-```{r Setting up the box plots,echo=FALSE}
+The data files are downloaded from Open Science Framework:
+```{r importing the data}
+source("../get_data_from_osf.R")
+get_data_from_osf(link = "https://osf.io/vnq6s/")
+Data = read.csv("Data Files/TextureResults.csv",header = T, sep=';')
+```
+
+```{r Setting up the box plots, echo=FALSE}
 
 p1 = ggplot(data = Data, aes(x=reorder(Taxa,T.index), y=T.index,fill=Taxa)) + 
   geom_boxplot()
@@ -51,34 +31,37 @@ p2 = ggplot(data = Data, aes(x=reorder(Taxa,T.index), y=M.index,fill=Taxa)) +
 p3 = ggplot(data = Data, aes(x=reorder(Taxa,T.index), y=pfT.index..C.,fill=Taxa
 )) + geom_boxplot()
 
-p4 =   
-ggplot(data = Data, aes(x=reorder(Taxa,T.index), y=pfT.index..A.,fill=Taxa
+p4 = ggplot(data = Data, aes(x=reorder(Taxa,T.index), y=pfT.index..A.,fill=Taxa
 )) + geom_boxplot()
-  
+```
+
+```{r, echo=F}
+color_scale <- c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff")
+
   p1 = p1 +theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),axis.ticks.x=element_blank(),
                                  axis.title.x = element_blank(),axis.title.y = element_text(size=9))+
     ylab("T-index")+
-    scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
+    scale_fill_manual(values=color_scale)
 
   p2 = p2 +theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),
                                  axis.ticks.x=element_blank(),axis.title.x = element_blank(),axis.title.y = element_text(size=9))+
     ylab("M-index")+
-    scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
+    scale_fill_manual(values=color_scale)
   
   p3 = p3 + theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),
                                   axis.ticks.x=element_blank(),axis.title.x = element_blank(),axis.title.y = element_text(size=9))+
     ylab("pfT-index (C)")+
-    scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
+    scale_fill_manual(values=color_scale)
   
   p4 = p4 +theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),
                                  axis.ticks.x=element_blank(),axis.title.x = element_blank(),axis.title.y = element_text(size=9))+
     ylab("pfT-index (A)")+
-    scale_fill_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
+    scale_fill_manual(values=color_scale)
 ```
 
-## All the methods.
+## All the methods
 
-Here we plot 3 methods of looking at the texture index of materials. First, we use the texture index (T-index), followed by the misorientation index (M-index) and then the pole figure texture index  (pfT-index) for the A and C axis. 
+Here we plot 3 methods of looking at the texture index of materials. First, we use the Texture Index (TI), followed by the misorientation index (M-index) and then the pole figure texture index  (pfT-index) for the A and C axis. 
 
 ```{r,echo=FALSE}
 ggpubr::ggarrange(p1, p2,p3,p4,
@@ -86,9 +69,9 @@ ggpubr::ggarrange(p1, p2,p3,p4,
                   ncol = 2, nrow = 2)
 ```
 
-## Comparing methods.
+## Comparing methods
 
-Here we use scatter plots to compare the difference between the M-index and t-index 
+Here we use scatter plots to compare the difference between the M-index and the T Index 
 
 ```{r,echo=FALSE}
 sc1= ggplot2::ggplot(Data, aes(y=M.index, x=T.index, color=Taxa, shape=Taxa)) + 
@@ -96,24 +79,23 @@ sc1= ggplot2::ggplot(Data, aes(y=M.index, x=T.index, color=Taxa, shape=Taxa)) +
   ylab(expression("M-index")) + 
   xlab(expression("T-index"))+
   theme_classic()+
-  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))+
+  scale_colour_manual(values=color_scale)+
 scale_shape_manual(values=c(4,15,16,17,18,25))+
   geom_point(size=1.5,stroke = 1.5)
-sc1
+
 
 sc2= ggplot2::ggplot(Data, aes(y=pfT.index..C., x=pfT.index..A., color=Taxa, shape=Taxa)) + 
   geom_point(size=2) + 
   ylab(expression("pfT-index(C)")) + 
   xlab(expression("pfT-index(A)"))+
   theme_classic()+
-  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))+
+  scale_colour_manual(values=color_scale)+
 scale_shape_manual(values=c(4,15,16,17,18,25))+
   geom_point(size=1.5,stroke = 1.5)
-sc2
 
 ```
 
-## Big combi plot.
+## Big combi plot
 
 This is just a combination plot of the above data.
 
@@ -127,295 +109,58 @@ ggarrange(sc1,
 ) 
 ```
 
-## How do things change with area?
+## How do values change with area?
 
-It appears that area does have an impact on the T-index values obtained, however the M-index does not have the resolution to decipher the differences between taxa. 
+It appears that area does have an impact on the TI values, however, the M-index does not have the resolution to decipher the differences between taxa. 
 
 ```{r comparing area vs indexes,echo=FALSE}
-ggplot2::ggplot(Data, aes(y=T.index, x=Area, color=Taxa, shape=Taxa)) + 
+TI_area <- ggplot2::ggplot(Data, aes(y=T.index, x=Area, color=Taxa, shape=Taxa)) + 
   geom_point(size=2,stroke = 1) + 
   ylab(expression("T-index")) + 
   xlab(expression("Area"))+
   theme_classic()+
   geom_smooth(method=lm,se=FALSE,show.legend=TRUE)+
   theme(legend.position = "none")+
-  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))+
+  scale_colour_manual(values=color_scale)+
   scale_shape_manual(values=c(4,15,16,17,18,25))
   
-ggplot2::ggplot(Data, aes(y=M.index, x=Area, color=Taxa, shape=Taxa)) + 
+MI_area<- ggplot2::ggplot(Data, aes(y=M.index, x=Area, color=Taxa, shape=Taxa)) + 
   geom_point(size=2,stroke = 1) + 
   ylab(expression("M-index")) + 
   xlab(expression("Area"))+
   theme_classic()+
   geom_smooth(method=lm,se=FALSE)+
   theme(legend.position = "none")+
-  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))+ 
+  scale_colour_manual(values=color_scale)+ 
   scale_shape_manual(values=c(4,15,16,17,18,25))
 
 ```
+## Composite plot used in Extended Data
+
+```{r, echo=F}
+composite <- ggarrange(ggarrange(TI_area, MI_area, ncol = 2, labels = c("a", "b")),
+          ggarrange(sc1, sc2, ncol = 2, labels = c("c", "d")),
+          nrow = 2, 
+          labels = "a")
+composite
+```
+
+```{r, include=F}
+ggsave(filename = "composite.png",
+       plot = composite,
+       dpi = 300,
+       width = 9)
+```
+
+## Regression analysis
+
+Using linear regression to explore the relationship between TI and area:
+```{r Regression}
+source("overall_p.R")
+source("regression.R")
+Regression_results <- regression(unique(Data$Taxa))
 ```
 
 ```{r ,echo=FALSE}
-## Make the Matrix ##
-Matrix <- matrix(data = 0, nrow = 6, ncol = 3)
- colnames(Matrix) = c('taxa','R squ.','p-value' )
- 
-## Subset the data ##
-Pro <- Data[Data$Taxa == 'Pro.muelleri',]
-Pan<- Data[Data$Taxa == 'Pan.equicostatus',]
-Exca<- Data[Data$Taxa == 'W. excavata',]
-Bisp<- Data[Data$Taxa == 'B. cf. aculeatus',]
-Trip<- Data[Data$Taxa == 'T. gracilis',]
-Pal<- Data[Data$Taxa =='Palmatolepis sp.',]
-
-## Run reg ##
-reg = lm(T.index ~ Area, data = Pro)
-#define function to extract overall p-value of model
-overall_p <- function(reg) {
-    f <- summary(reg)$fstatistic
-    p <- pf(f[1],f[2],f[3],lower.tail=F)
-    attributes(p) <- NULL
-    return(p)}
-#extract overall p-value of model
-overall_p(reg)
-if(overall_p(reg) < 0.005)
-pv = "< 0.005"
-if(overall_p(reg) > 0.005)
-pv = overall_p(reg)
-
-Matrix[1,1] <-'Pro.muelleri'
-Matrix[1,2] <-summary(reg)$adj.r.squared
-Matrix[1,3] <- pv
-
-##
-
-reg = lm(T.index ~ Area, data = Pan)
-#define function to extract overall p-value of model
-overall_p <- function(reg) {
-    f <- summary(reg)$fstatistic
-    p <- pf(f[1],f[2],f[3],lower.tail=F)
-    attributes(p) <- NULL
-    return(p)}
-#extract overall p-value of model
-overall_p(reg)
-if(overall_p(reg) < 0.005)
-pv = "< 0.005"
-if(overall_p(reg) > 0.005)
-pv = overall_p(reg)
-
-Matrix[2,1] <-'Pan.equicostatus'
-Matrix[2,2] <- summary(reg)$adj.r.squared
-Matrix[2,3] <- pv
-
-##
-
-reg = lm(T.index ~ Area, data = Exca)
-#define function to extract overall p-value of model
-overall_p <- function(reg) {
-    f <- summary(reg)$fstatistic
-    p <- pf(f[1],f[2],f[3],lower.tail=F)
-    attributes(p) <- NULL
-    return(p)}
-#extract overall p-value of model
-overall_p(reg)
-if(overall_p(reg) < 0.005)
-pv = "< 0.005"
-if(overall_p(reg) > 0.005)
-pv = overall_p(reg)
-
-Matrix[3,1] <-'W. excavata'
-Matrix[3,2] <- summary(reg)$adj.r.squared
-Matrix[3,3] <- pv
-
-##
-
-reg = lm(T.index ~ Area, data = Bisp)
-#define function to extract overall p-value of model
-overall_p <- function(reg) {
-    f <- summary(reg)$fstatistic
-    p <- pf(f[1],f[2],f[3],lower.tail=F)
-    attributes(p) <- NULL
-    return(p)}
-#extract overall p-value of model
-overall_p(reg)
-if(overall_p(reg) < 0.005)
-pv = "< 0.005"
-if(overall_p(reg) > 0.005)
-pv = overall_p(reg)
-
-Matrix[4,1] <-'B. cf. aculeatus'
-Matrix[4,2] <- summary(reg)$adj.r.squared
-Matrix[4,3] <- pv
-##
-
-reg = lm(T.index ~ Area, data = Trip)
-#define function to extract overall p-value of model
-overall_p <- function(reg) {
-    f <- summary(reg)$fstatistic
-    p <- pf(f[1],f[2],f[3],lower.tail=F)
-    attributes(p) <- NULL
-    return(p)}
-#extract overall p-value of model
-overall_p(reg)
-if(overall_p(reg) < 0.005)
-pv = "< 0.005"
-if(overall_p(reg) > 0.005)
-pv = overall_p(reg)
-
-Matrix[5,1] <-'T. gracilis'
-Matrix[5,2] <- summary(reg)$adj.r.squared
-Matrix[5,3] <- pv
-
-
-reg = lm(T.index ~ Area, data = Pal)
-#define function to extract overall p-value of model
-overall_p <- function(reg) {
-    f <- summary(reg)$fstatistic
-    p <- pf(f[1],f[2],f[3],lower.tail=F)
-    attributes(p) <- NULL
-    return(p)}
-#extract overall p-value of model
-overall_p(reg)
-if(overall_p(reg) < 0.005)
-pv = "< 0.005"
-if(overall_p(reg) > 0.005)
-pv = overall_p(reg)
-
-Matrix[6,1] <-'Palmatolepis sp.'
-Matrix[6,2] <- summary(reg)$adj.r.squared
-Matrix[6,3] <- pv
-```
-```{r ,echo=FALSE}
-## Make the Matrix ##
-MatrixM <- matrix(data = 0, nrow = 6, ncol = 3)
- colnames(Matrix) = c('taxa','R squ.','p-value' )
- 
-## Subset the data ##
-Pro <- Data[Data$Taxa == 'Pro.muelleri',]
-Pan<- Data[Data$Taxa == 'Pan.equicostatus',]
-Exca<- Data[Data$Taxa == 'W. excavata',]
-Bisp<- Data[Data$Taxa == 'B. cf. aculeatus',]
-Trip<- Data[Data$Taxa == 'T. gracilis',]
-Pal<- Data[Data$Taxa =='Palmatolepis sp.',]
-
-## Run reg ##
-reg = lm(M.index ~ Area, data = Pro)
-#define function to extract overall p-value of model
-overall_p <- function(reg) {
-    f <- summary(reg)$fstatistic
-    p <- pf(f[1],f[2],f[3],lower.tail=F)
-    attributes(p) <- NULL
-    return(p)}
-#extract overall p-value of model
-overall_p(reg)
-if(overall_p(reg) < 0.005)
-pv = "< 0.005"
-if(overall_p(reg) > 0.005)
-pv = overall_p(reg)
-
-MatrixM[1,1] <-'Pro.muelleri'
-MatrixM[1,2] <-summary(reg)$adj.r.squared
-MatrixM[1,3] <- pv
-
-##
-
-reg = lm(M.index ~ Area, data = Pan)
-#define function to extract overall p-value of model
-overall_p <- function(reg) {
-    f <- summary(reg)$fstatistic
-    p <- pf(f[1],f[2],f[3],lower.tail=F)
-    attributes(p) <- NULL
-    return(p)}
-#extract overall p-value of model
-overall_p(reg)
-if(overall_p(reg) < 0.005)
-pv = "< 0.005"
-if(overall_p(reg) > 0.005)
-pv = overall_p(reg)
-
-MatrixM[2,1] <-'Pan.equicostatus'
-MatrixM[2,2] <- summary(reg)$adj.r.squared
-MatrixM[2,3] <- pv
-
-##
-
-reg = lm(M.index ~ Area, data = Exca)
-#define function to extract overall p-value of model
-overall_p <- function(reg) {
-    f <- summary(reg)$fstatistic
-    p <- pf(f[1],f[2],f[3],lower.tail=F)
-    attributes(p) <- NULL
-    return(p)}
-#extract overall p-value of model
-overall_p(reg)
-if(overall_p(reg) < 0.005)
-pv = "< 0.005"
-if(overall_p(reg) > 0.005)
-pv = overall_p(reg)
-
-MatrixM[3,1] <-'W. excavata'
-MatrixM[3,2] <- summary(reg)$adj.r.squared
-MatrixM[3,3] <- pv
-
-##
-
-reg = lm(M.index ~ Area, data = Bisp)
-#define function to extract overall p-value of model
-overall_p <- function(reg) {
-    f <- summary(reg)$fstatistic
-    p <- pf(f[1],f[2],f[3],lower.tail=F)
-    attributes(p) <- NULL
-    return(p)}
-#extract overall p-value of model
-overall_p(reg)
-if(overall_p(reg) < 0.005)
-pv = "< 0.005"
-if(overall_p(reg) > 0.005)
-pv = overall_p(reg)
-
-MatrixM[4,1] <-'B. cf. aculeatus'
-MatrixM[4,2] <- summary(reg)$adj.r.squared
-MatrixM[4,3] <- pv
-##
-
-reg = lm(M.index ~ Area, data = Trip)
-#define function to extract overall p-value of model
-overall_p <- function(reg) {
-    f <- summary(reg)$fstatistic
-    p <- pf(f[1],f[2],f[3],lower.tail=F)
-    attributes(p) <- NULL
-    return(p)}
-#extract overall p-value of model
-overall_p(reg)
-if(overall_p(reg) < 0.005)
-pv = "< 0.005"
-if(overall_p(reg) > 0.005)
-pv = overall_p(reg)
-
-MatrixM[5,1] <-'T. gracilis'
-MatrixM[5,2] <- summary(reg)$adj.r.squared
-MatrixM[5,3] <- pv
-
-
-reg = lm(M.index ~ Area, data = Pal)
-#define function to extract overall p-value of model
-overall_p <- function(reg) {
-    f <- summary(reg)$fstatistic
-    p <- pf(f[1],f[2],f[3],lower.tail=F)
-    attributes(p) <- NULL
-    return(p)}
-#extract overall p-value of model
-overall_p(reg)
-if(overall_p(reg) < 0.005)
-pv = "< 0.005"
-if(overall_p(reg) > 0.005)
-pv = overall_p(reg)
-
-MatrixM[6,1] <-'Palmatolepis sp.'
-MatrixM[6,2] <- summary(reg)$adj.r.squared
-MatrixM[6,3] <- pv
-
-kable(Matrix)
-kable(MatrixM)
-
+kable(Regression_results)
 ```
