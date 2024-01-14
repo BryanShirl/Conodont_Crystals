@@ -1,5 +1,5 @@
 % Code associated with the publication "Increasing control over biomineralization in conodont evolution"
-% Tested and running in Mtex v5.7.0 MATLAB R2021b
+% Tested and running in Mtex v5.7.0 MATLAB R2023a
 %% Clean up workspace %%
 clear
 close all
@@ -52,13 +52,11 @@ end
 %% Plotting the results %%
 % The following code contains three loops that plot the EBSD data in
 % various ways
-% Loop one is for band contrast vs grain bounderies
-% Loop two plots EBSD orientations vs grain bounderies 
-% Loop three plots EBSD orientations with filled grains.
 
 close all
 mtexFig = newMtexFigure('layout',[3,5]);
 
+% Loop one is for band contrast vs grain boundaries
 for r = 1:4:20
 ebsd = reconstructed(r).ebsd
 grains = reconGrains(r).grains
@@ -71,6 +69,7 @@ hold off
 nextAxis
 end
 
+% Loop two plots EBSD orientations vs grain boundaries 
 for r = 1:4:20
 ebsd = reconstructed(r).ebsd
 grains = reconGrains(r).grains
@@ -83,6 +82,7 @@ hold off
 nextAxis
 end
 
+% Loop three plots EBSD orientations with filled grains.
 for r = 1:4:20
 ebsd = reconstructed(r).ebsd
 grains = reconGrains(r).grains

@@ -41,7 +41,7 @@ __Helen King__
 Utrecht University    
 email: H.E.King [at] uu.nl  
 
-__Emilia Jarochowska__    
+__Emilia Jarochowska (maintainer)__    
 Utrecht University  
 Formerly: Fachgruppe Paläoumwelt, Friedrich-Alexander-Universität Erlangen-Nürnberg  
 email: e.b.jarochowska [at] uu.nl    
@@ -50,17 +50,18 @@ ORCID: [0000-0001-8937-9405](https://orcid.org/0000-0001-8937-9405)
 
 ### Running instructions
 
-### EBSD datasets: Importing, postprocessing, plotting and calculations
+#### EBSD datasets: Importing, postprocessing, plotting and calculations
 
-Detailed instructions are in `Conodont_Mtex_scripts/INSTRUCTION.md`. In this step, datasets required for reproducing plots and tables used in the manuscript are produced. These datasets are also provided here as ready files, for users with no access to Matlab. Therefore, the following steps can be executed using R Studio:
+Detailed instructions are in `Conodont_Mtex_scripts/INSTRUCTION.md`. In this step, datasets required for reproducing plots and tables used in the manuscript are produced. 
+Datasets produced are also provided here as ready files, for users with no access to Matlab. Users without Matlab can reproduce the analysis of EBSD results by using R Studio:
 
 #### Comparison of methods used to quantify crystallographic textures
 
-In R Studio, run `Texture methods comparison/Testing_Quant_Methods_extended.Rmd`. It will download the data produced in Matlab, generate the plots and regression results presented in the manuscript.
+In R Studio, run `Texture methods comparison/Testing_Quant_Methods_extended.Rmd`. It will download the data produced in Matlab, generate the plots and regression results presented in the manuscript. Run time on MacOS Sonoma 14.2.1 with 8 GB RAM: 9 s.
 
 #### Analysis and plotting of Raman spectroscopy data
 
-In R or R Studio, run `Raman.R`. It will download the data produced in Matlab, generate the plots and regression results presented in the manuscript.
+In R or R Studio, run `Raman.R`. It will download the data produced in Matlab, generate the plots and regression results presented in the manuscript. Run time on MacOS Sonoma 14.2.1 with 8 GB RAM: 8 s.
 
 ### Dependencies
 
@@ -69,14 +70,19 @@ For manipulating EBSD data:
 * [MTEX](https://mtex-toolbox.github.io/) 5.9, which uses the [NFFT](https://www-user.tu-chemnitz.de/~potts/nfft/) library
 * MATLAB; the code was written in version 2023a
 
-For analysing Raman data:
+For plotting and calculations on datasets output from Matlab:
 
 * [R Software](https://www.r-project.org/); the code was written in version 4.3.0
+* [R Studio](https://www.rstudio.com/categories/rstudio-ide/), we used 2023.12.0
 * Packages:
   - ggplot2 3.4.2
   - ggpubr 0.6.0
   - lmodel2 1.7-3
   - utils 4.3.1
+  - osfr 0.2.9
+  - knitr 1.42
+
+The code has been tested and ran on Windows 10 and MacOS Sonoma 14.2.1. The loading and installation time were below 2 min for Matlab and instantaneous for all 
 
 *Credits:*
 
@@ -87,6 +93,8 @@ For analysing Raman data:
 * Legendre P (2018). _lmodel2: Model II Regression_. R package version 1.7-3,
   <https://CRAN.R-project.org/package=lmodel2>.
 * H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2016.
+* Wolen et al., (2020). osfr: An R Interface to the Open Science Framework. Journal of Open Source
+  Software, 5(46), 2071, [https://doi.org/10.21105/joss.02071](https://doi.org/10.21105/joss.02071)
 
 ## Citation
 

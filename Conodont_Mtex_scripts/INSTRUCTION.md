@@ -1,6 +1,6 @@
 # Introduction
 This instruction will guide you through the process of how the data for "Increasing control over biomineralization in conodont evolution" was processed and aquired.
- Tested and running in Mtex v5.7.0 MATLAB R2021b
+Tested and running in Mtex v5.7.0 MATLAB R2023a
  
 ## Table of Contents  
 
@@ -9,7 +9,7 @@ This instruction will guide you through the process of how the data for "Increas
 
 ### Prerequisites 
 
-This code is run in Matlab (R2022b) using the MTEX tool box. Further information on the installation of MTEX can be found at https://mtex-toolbox.github.io/.
+This code is run in Matlab (R2023a) using the [MTEX toolbox](https://mtex-toolbox.github.io/). Further information on the installation of MTEX can be found at https://mtex-toolbox.github.io/.
 
 ### Usage
 
@@ -17,13 +17,13 @@ This code is run in Matlab (R2022b) using the MTEX tool box. Further information
 
 Open and run `Step_1_EBSD_Post_Processing.m`
 
-This code is used to post-process EBSD data for further analysis. This downloads the raw EBSD data from an online repository (OSF) as well as predefined polygons.
+This code is used to post-process EBSD data for further analysis. This downloads the raw EBSD data from an online repository (OSF), as well as predefined polygons.
 This raw data is then rotated and cropped into a format that can be used later in the workflow (Step 2) and represents comparable data sets. Within a step by step guide is provided for each of these, and  data such as pole figures/inverse pole figures are also plotted.
 
 #### Step 2 
 Open and run `Step_2_Texture_Quant.m`
 
-This code is dependent on the function `TexCalc.m`. This function calculates the T-index, M-Index and IPFT-index from an EBSD dataset. The function takes a user defined EBSD data set, and creates a series of subsets with a random location. The subsets are quare-shaped and the size is varied within a range provided by the user.
+This code refers to the function `TexCalc.m`. This function calculates the T-index, M-Index and IPFT-index from an EBSD dataset. The function takes a user defined EBSD data set, and creates a series of subsets with a random location. The subsets are quare-shaped and the size is varied within a range provided by the user.
 
 ##### Function usage
 
