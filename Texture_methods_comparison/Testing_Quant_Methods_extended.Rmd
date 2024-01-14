@@ -1,20 +1,21 @@
 ---
 title: "Testing metrics for crystallographic order"
-author: "Bryan Shirley, with edits by Emilia Jarochowska"
-date: "2023-11-19"
+author: "Bryan Shirley and Emilia Jarochowska"
+date: "2023-01-14"
 output: github_document
 ---
 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+install.packages(setdiff(c("ggplot2", "ggpubr", "knitr", "osfr"), rownames(installed.packages())))  
 library(ggplot2)
 library(ggpubr)
 library(knitr)
 ```
 
-The data files are downloaded from Open Science Framework:
-```{r importing the data}
+The data files are downloaded from Open Science Framework. 
+```{r importing the data, include = F}
 source("../get_data_from_osf.R")
 get_data_from_osf(link = "https://osf.io/vnq6s/")
 Data = read.csv("Data Files/TextureResults.csv",header = T, sep=';')
@@ -69,11 +70,7 @@ ggpubr::ggarrange(p1, p2,p3,p4,
                   ncol = 2, nrow = 2)
 ```
 
-## Comparing methods
-
-Here we use scatter plots to compare the difference between the M-index and the T Index 
-
-```{r,echo=FALSE}
+```{r scatter plots to compare the difference between the M-index and the T Index,echo=FALSE}
 sc1= ggplot2::ggplot(Data, aes(y=M.index, x=T.index, color=Taxa, shape=Taxa)) + 
   geom_point(size=2) + 
   ylab(expression("M-index")) + 
@@ -109,11 +106,7 @@ ggarrange(sc1,
 ) 
 ```
 
-## How do values change with area?
-
-It appears that area does have an impact on the TI values, however, the M-index does not have the resolution to decipher the differences between taxa. 
-
-```{r comparing area vs indexes,echo=FALSE}
+```{r comparing area vs indices, echo=FALSE}
 TI_area <- ggplot2::ggplot(Data, aes(y=T.index, x=Area, color=Taxa, shape=Taxa)) + 
   geom_point(size=2,stroke = 1) + 
   ylab(expression("T-index")) + 
@@ -137,7 +130,7 @@ MI_area<- ggplot2::ggplot(Data, aes(y=M.index, x=Area, color=Taxa, shape=Taxa)) 
 ```
 ## Composite plot used in Extended Data
 
-```{r, echo=F}
+```{r Composite plot used in Extended Data, echo=F}
 composite <- ggarrange(ggarrange(TI_area, MI_area, ncol = 2, labels = c("a", "b")),
           ggarrange(sc1, sc2, ncol = 2, labels = c("c", "d")),
           nrow = 2, 
@@ -155,12 +148,14 @@ ggsave(filename = "composite.png",
 ## Regression analysis
 
 Using linear regression to explore the relationship between TI and area:
-```{r Regression}
+
+```{r Regression between TI and area, include = F}
 source("overall_p.R")
 source("regression.R")
 Regression_results <- regression(unique(Data$Taxa))
 ```
 
-```{r ,echo=FALSE}
-kable(Regression_results)
+```{r, echo=FALSE}
+kable(x = Regression_results,
+      row.names = F)
 ```

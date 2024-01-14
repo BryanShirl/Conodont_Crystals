@@ -1,9 +1,4 @@
 *.asv
-*.Rproj
-Raman conodonts/Raman conodonts/Raman conodonts.Rproj
-Raman conodonts/Raman conodonts/.RData
-Raman conodonts/Raman conodonts/.Rhistory
-Raman\ conodonts/Raman\ conodonts/Slopes_RMA_CI
 *.Rproj.user
 *.Rapp.history
 *.Rhistory
@@ -13,10 +8,9 @@ Raman\ conodonts/Raman\ conodonts/Slopes_RMA_CI
 *.mat
 *.crc
 *.zip
+
 # Files with data downloaded from OSF
 *.csv
-
-# Files in the subfolder
-Texture methods comparison/.Rmd
-Texture methods comparison/.Rhistory
-Texture methods comparison/.RData
+"Texture_methods_comparison/Data Files/*"
+"Texture_methods_comparison/*.png"
+Raman_data/*
