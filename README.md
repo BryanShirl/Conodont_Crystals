@@ -48,6 +48,20 @@ email: e.b.jarochowska [at] uu.nl
 Web page: [www.uu.nl/staff/EBJarochowska](https://www.uu.nl/staff/EBJarochowska)    
 ORCID: [0000-0001-8937-9405](https://orcid.org/0000-0001-8937-9405)  
 
+### Running instructions
+
+### EBSD datasets: Importing, postprocessing, plotting and calculations
+
+Detailed instructions are in `Conodont_Mtex_scripts/INSTRUCTION.md`. In this step, datasets required for reproducing plots and tables used in the manuscript are produced. These datasets are also provided here as ready files, for users with no access to Matlab. Therefore, the following steps can be executed using R Studio:
+
+#### Comparison of methods used to quantify crystallographic textures
+
+In R Studio, run `Texture methods comparison/Testing_Quant_Methods_extended.Rmd`. It will download the data produced in Matlab, generate the plots and regression results presented in the manuscript.
+
+#### Analysis and plotting of Raman spectroscopy data
+
+In R or R Studio, run `Raman.R`. It will download the data produced in Matlab, generate the plots and regression results presented in the manuscript.
+
 ### Dependencies
 
 For manipulating EBSD data:

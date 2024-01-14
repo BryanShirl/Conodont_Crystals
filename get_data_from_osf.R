@@ -10,7 +10,8 @@ get_data_from_osf = function(link){
   
   my_files <- osfr::osf_ls_files(my_project)
   
-  osfr::osf_download(my_files)
+  osfr::osf_download(x = my_files,
+                     conflicts = "overwrite")
   
   return(invisible())
 }
