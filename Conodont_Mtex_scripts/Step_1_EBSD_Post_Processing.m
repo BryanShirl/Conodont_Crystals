@@ -34,6 +34,7 @@ pfAnnotations = @(varargin) text([vector3d.X,vector3d.Y],{'  X','  Y'},...
 pfAnnotations = @(varargin) [];
 setMTEXpref('pfAnnotations',pfAnnotations); 
 pname = WD;
+% Loading polygons representing areas covered in the manuscript 
 load('Trip_Poly.mat');
 load('Trip_ebsd.mat');
 load('Pan_Poly.mat');
@@ -67,12 +68,10 @@ ebsd= ebsd('indexed')
 %% 
 % Here are the pole figures for the data:
 
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 text(vector3d.X,'X','horizontalAlignment','left')
 text(vector3d.Y,'Y','VerticalAlignment','top')
-ebsd1 = ebsd
-%%
-ebsd = ebsd1
+
 %% 
 % Now we are going to rotate the data so that from left to right represents 
 % the hypothetical occlusal plane.
@@ -82,10 +81,7 @@ plot(ebsdr,ebsdr.orientations)
 %% 
 % How has this affected the pole figures?
 
-plotPDF(ebsdr.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsdr.orientations.CS),'contourf')
-%% 
-% 
-
+plotPDF(ebsdr.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsdr.orientations.CS),'contourf')
 text(vector3d.X,'X','horizontalAlignment','left')
 text(vector3d.Y,'Y','VerticalAlignment','top')
 %% 
@@ -98,9 +94,7 @@ hold on
 plot(pgon)
 hold off
 %%
-TestData = ebsdr(inpolygon(ebsdr,Pro_Poly))
-figure;
-plot(TestData)
+plot(ebsdr(inpolygon(ebsdr,Pro_Poly)))
 %%
 ebsd = ebsdr(inpolygon(ebsdr,Pro_Poly))
 %%
@@ -142,20 +136,7 @@ hold off
 % These are the final pole figures:
 
 figure;
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},ebsd.orientations.CS),'contourf')
-text(vector3d.X,'.X','horizontalAlignment','left')
-text(vector3d.Y,'Y','VerticalAlignment','top')
-figure;
-plotPDF(ebsd.orientations,Miller({0,0,0,1},ebsd.orientations.CS),'contourf')
-text(vector3d.X,'X','horizontalAlignment','left')
-text(vector3d.Y,'Y','VerticalAlignment','top')
-
-
-figure;
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'MarkerSize',1.5,'MarkerFaceColor','grey','MarkerFaceAlpha',0.3,'MarkerEdgeColor','none','points',6000)
-%%
-figure;
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},ebsd.orientations.CS, 'UVTW'),'contourf')
 text(vector3d.X,'X','horizontalAlignment','left')
 text(vector3d.Y,'Y','VerticalAlignment','top')
 hold on
@@ -163,14 +144,14 @@ hold on
 hold off
 
 figure;
-plotPDF(ebsd.orientations,Miller({0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 text(vector3d.X,'X','horizontalAlignment','left')
 text(vector3d.Y,'Y','VerticalAlignment','top')
 hold on
    mtexColorbar('location','southoutside')
 hold off
 
-%% Rotation Crop and Plotting of Panderodus equicostatus %%
+%%%%%%%% Rotation Crop and Plotting of Panderodus equicostatus %%%%%%%%%
 CS = {... 
   'notIndexed',...
   crystalSymmetry('6/m', [9.4 9.4 6.9], 'X||a*', 'Y||b', 'Z||c*', 'mineral', 'Apatite', 'color', [0.53 0.81 0.98]),...
@@ -186,15 +167,13 @@ ebsd = EBSD.load(fname,CS,'interface','crc',...
   'convertEuler2SpatialReferenceFrame');
 ebsd(ebsd.phase==2).phase = 1;
 plot(ebsd,ebsd.orientations)
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 text(vector3d.X,'X','horizontalAlignment','left')
 text(vector3d.Y,'Y','VerticalAlignment','top')
-ebsd1 = ebsd
 %%
-ebsd = ebsd1
 ebsdr = rotate(ebsd,rotation.byAxisAngle(zvector,-50*degree))
 plot(ebsdr,ebsdr.orientations)
-plotPDF(ebsdr.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsdr.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 text(vector3d.X,'X','horizontalAlignment','left')
 text(vector3d.Y,'Y','VerticalAlignment','top')
 %%
@@ -204,9 +183,7 @@ hold on
 plot(pgon)
 hold off
 %%
-TestData = ebsdr(inpolygon(ebsdr,Pan_Poly))
-figure;
-plot(TestData)
+plot(ebsdr(inpolygon(ebsdr,Pan_Poly)))
 %%
 ebsd = ebsdr(inpolygon(ebsdr,Pan_Poly))
 %%
@@ -234,9 +211,9 @@ plot(ipfKey)
 hold on
 plotIPDF(ori,vector3d.Z,'MarkerSize',2,'MarkerFaceColor','none','MarkerEdgeColor','black','points',1000)
 hold off
-%%
+%% Pole figures for the manuscript
 figure;
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},ebsd.orientations.CS, 'UVTW'),'contourf')
 text(vector3d.X,'X','horizontalAlignment','left')
 text(vector3d.Y,'Y','VerticalAlignment','top')
 hold on
@@ -244,7 +221,7 @@ hold on
 hold off
 
 figure;
-plotPDF(ebsd.orientations,Miller({0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 text(vector3d.X,'X','horizontalAlignment','left')
 text(vector3d.Y,'Y','VerticalAlignment','top')
 hold on
@@ -266,18 +243,15 @@ fname = [pname '\Excavata.ctf'];
 ebsd = EBSD.load(fname,CS,'interface','ctf',...
   'convertEuler2SpatialReferenceFrame');
 plot(ebsd,ebsd.orientations)
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
-ebsd1 = ebsd
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 %%
-ebsd = ebsd1
 ebsdr = rotate(ebsd,rotation.byAxisAngle(zvector,-65*degree))
 plot(ebsdr,ebsdr.orientations)
-plotPDF(ebsdr.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsdr.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 
 %%
-TestData = ebsdr
 figure;
-plot(TestData)
+plot(ebsdr)
 %%
 ebsd = ebsdr
 %%
@@ -307,17 +281,17 @@ hold on
 plotIPDF(ori,vector3d.Z,'MarkerSize',2,'MarkerFaceColor','none','MarkerEdgeColor','black','points',1000)
 hold off
 %%
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 
 figure;
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 hold on 
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'MarkerSize',1.5,'MarkerFaceColor','grey','MarkerFaceAlpha',0.3,'MarkerEdgeColor','none','points',6000)
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'MarkerSize',1.5,'MarkerFaceColor','grey','MarkerFaceAlpha',0.3,'MarkerEdgeColor','none','points',6000)
 hold off
 
-%%
+%% Pole figures for the manuscript
 figure;
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},ebsd.orientations.CS, 'UVTW'),'contourf')
 text(vector3d.X,'X','horizontalAlignment','left')
 text(vector3d.Y,'Y','VerticalAlignment','top')
 hold on
@@ -325,18 +299,18 @@ hold on
 hold off
 
 figure;
-plotPDF(ebsd.orientations,Miller({0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 text(vector3d.X,'X','horizontalAlignment','left')
 text(vector3d.Y,'Y','VerticalAlignment','top')
 hold on
    mtexColorbar('location','southoutside')
 hold off
-%% Rotation Crop and Plotting of Tripodellus sp. %%
+
+%%%%%%%%%% Rotation Crop and Plotting of Tripodellus sp. %%%%%%%%%%%
 
 ebsd = Trip_ebsd 
 plot(ebsd,ebsd.orientations)
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
-ebsd1 = ebsd
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 %%
 pgon = polyshape(Trip_Poly)
 plot(ebsd,ebsd.orientations)
@@ -346,11 +320,10 @@ hold off
 %%
 rot = rotation.byAxisAngle(xvector,90*degree);
 ebsdr = rotate(ebsd,rot,'keepXY');
-TestData = ebsdr(inpolygon(ebsdr,Trip_Poly))
 figure;
-plot(TestData)
+plot(ebsdr(inpolygon(ebsdr,Trip_Poly)))
 %%
-ebsd = TestData
+ebsd = ebsdr(inpolygon(ebsdr,Trip_Poly))
 %%
 cs = crystalSymmetry('6/m')
 ori = ebsd.orientations
@@ -378,16 +351,16 @@ hold on
 plotIPDF(ori,vector3d.Z,'MarkerSize',2,'MarkerFaceColor','none','MarkerEdgeColor','black','points',1000)
 hold off
 %%
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 
 figure;
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 hold on 
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'MarkerSize',1.5,'MarkerFaceColor','grey','MarkerFaceAlpha',0.3,'MarkerEdgeColor','none','points',6000)
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'MarkerSize',1.5,'MarkerFaceColor','grey','MarkerFaceAlpha',0.3,'MarkerEdgeColor','none','points',6000)
 hold off
 %%
 figure;
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},ebsd.orientations.CS, 'UVTW'),'contourf')
 text(vector3d.X,'X','horizontalAlignment','left')
 text(vector3d.Y,'Y','VerticalAlignment','top')
 hold on
@@ -395,7 +368,7 @@ hold on
 hold off
 
 figure;
-plotPDF(ebsd.orientations,Miller({0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 text(vector3d.X,'X','horizontalAlignment','left')
 text(vector3d.Y,'Y','VerticalAlignment','top')
 hold on
@@ -426,12 +399,11 @@ ebsd = EBSD.load(fname,CS,'interface','crc',...
 ebsd(ebsd.phase==3).phase = 2;
 ebsd(ebsd.phase==4).phase = 2;
 plot(ebsd,ebsd.orientations)
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
-ebsd1 = ebsd
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 %%
 ebsdr = rotate(ebsd,rotation.byAxisAngle(zvector,-150*degree))
 plot(ebsdr,ebsdr.orientations)
-plotPDF(ebsdr.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsdr.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 %%
 rot = rotation.byAxisAngle(xvector,90*degree);
 ebsdr = rotate(ebsdr,rot,'keepXY');
@@ -442,11 +414,10 @@ hold on
 plot(pgon)
 hold off
 %%
-TestData = ebsdr(inpolygon(ebsdr,Pal_Poly))
 figure;
-plot(TestData)
+plot(ebsdr(inpolygon(ebsdr,Pal_Poly)))
 %%
-ebsd = TestData
+ebsd = ebsdr(inpolygon(ebsdr,Pal_Poly))
 %%
 cs = crystalSymmetry('6/m')
 ori = ebsd.orientations
@@ -473,16 +444,16 @@ hold on
 plotIPDF(ori,vector3d.Z,'MarkerSize',2,'MarkerFaceColor','none','MarkerEdgeColor','black','points',1000)
 hold off
 %%
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 
 figure;
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 hold on 
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'MarkerSize',1.5,'MarkerFaceColor','grey','MarkerFaceAlpha',0.3,'MarkerEdgeColor','none','points',6000)
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'MarkerSize',1.5,'MarkerFaceColor','grey','MarkerFaceAlpha',0.3,'MarkerEdgeColor','none','points',6000)
 hold off
 %%
 figure;
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},ebsd.orientations.CS, 'UVTW'),'contourf')
 text(vector3d.X,'X','horizontalAlignment','left')
 text(vector3d.Y,'Y','VerticalAlignment','top')
 hold on
@@ -490,7 +461,7 @@ hold on
 hold off
 
 figure;
-plotPDF(ebsd.orientations,Miller({0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 text(vector3d.X,'X','horizontalAlignment','left')
 text(vector3d.Y,'Y','VerticalAlignment','top')
 hold on
@@ -515,11 +486,11 @@ ebsd(ebsd.phase==2).phase = 1;
 plot(ebsd,ebsd.orientations)
 %%
 ebsd= ebsd('indexed')
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
-ebsd1 = ebsd
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
+
 ebsdr = rotate(ebsd,rotation.byAxisAngle(zvector,190*degree))
 plot(ebsdr,ebsdr.orientations)
-plotPDF(ebsdr.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsdr.orientations.CS),'contourf')
+plotPDF(ebsdr.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsdr.orientations.CS),'contourf')
 rot = rotation.byAxisAngle(xvector,90*degree);
 ebsdr = rotate(ebsdr,rot,'keepXY');
 
@@ -529,11 +500,10 @@ plot(ebsdr,ebsdr.orientations)
 hold on
 plot(pgon)
 hold off
-TestData = ebsdr(inpolygon(ebsdr,Bispa_poly))
 figure;
-plot(TestData)
+plot(ebsdr(inpolygon(ebsdr,Bispa_poly)))
 %%
-ebsd = TestData
+ebsd = ebsdr(inpolygon(ebsdr,Bispa_poly))
 cs = crystalSymmetry('6/m')
 ori = ebsd.orientations
 r = vector3d.Z
@@ -557,16 +527,16 @@ hold on
 plotIPDF(ori,vector3d.Z,'MarkerSize',2,'MarkerFaceColor','none','MarkerEdgeColor','black','points',1000)
 hold off
 
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 
 figure;
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 hold on 
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},{0,0,0,1},ebsd.orientations.CS),'MarkerSize',1.5,'MarkerFaceColor','grey','MarkerFaceAlpha',0.3,'MarkerEdgeColor','none','points',6000)
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},{0,0,0,1},ebsd.orientations.CS, 'UVTW'),'MarkerSize',1.5,'MarkerFaceColor','grey','MarkerFaceAlpha',0.3,'MarkerEdgeColor','none','points',6000)
 hold off
-
+%% Final pole figures for the manuscript
 figure;
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({1,1,-2,0},ebsd.orientations.CS, 'UVTW'),'contourf')
 text(vector3d.X,'X','horizontalAlignment','left')
 text(vector3d.Y,'Y','VerticalAlignment','top')
 hold on
@@ -574,23 +544,7 @@ hold on
 hold off
 
 figure;
-plotPDF(ebsd.orientations,Miller({0,0,0,1},ebsd.orientations.CS),'contourf')
-text(vector3d.X,'X','horizontalAlignment','left')
-text(vector3d.Y,'Y','VerticalAlignment','top')
-hold on
-   mtexColorbar('location','southoutside')
-hold off
-
-figure;
-plotPDF(ebsd.orientations,Miller({1,0,-1,0},ebsd.orientations.CS),'contourf')
-text(vector3d.X,'X','horizontalAlignment','left')
-text(vector3d.Y,'Y','VerticalAlignment','top')
-hold on
-   mtexColorbar('location','southoutside') %Sets scale bar to be exported with the image
-hold off
-
-figure;
-plotPDF(ebsd.orientations,Miller({0,0,0,1},ebsd.orientations.CS),'contourf')
+plotPDF(ebsd.orientations,Miller({0,0,0,1},ebsd.orientations.CS, 'UVTW'),'contourf')
 text(vector3d.X,'X','horizontalAlignment','left')
 text(vector3d.Y,'Y','VerticalAlignment','top')
 hold on
