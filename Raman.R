@@ -12,6 +12,8 @@ source("get_data_from_osf.R")
 get_data_from_osf(link = "https://osf.io/d7j69/")
 
 OurConodontData = read.csv("Shirley_et_al_Raman_01.csv")
+OurConodontData$Sample.name <- factor(OurConodontData$Sample.name,
+                                      levels = c("Pro. muelleri", "Pan. equicostatus ", "B. cf. aculeatus", "W. excavata", "T. gracilis", "Palmatolepis sp."))
 Specdata = read.csv("Shirley_et_al_Raman_03.csv")
 OtherAuthorConoData = read.csv("Shirley_et_al_Raman_02.csv")
 ThomasTeethData = read.csv("Shirley_et_al_Raman_04.csv")
@@ -41,7 +43,13 @@ p1 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=Sample.name, shap
   ylab(expression("FWHM of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) + 
   xlab(expression("PCMI of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
   theme_classic()+
-  scale_colour_manual(values=c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff"))
+  scale_colour_manual(values=c("#a36b2bff", # Pro.muelleri
+                               "#bf9e66ff", # Pan.equicostatus
+                               "#aecec5ff", # B. cf. aculeatus
+                               "#2686a0ff", # W. excavata
+                               "#dcd1a2ff", # T. gracilis
+                               "#cad5c1ff") # Palmatolepis sp.
+  )+theme(legend.position = "none")
 
 ## Plots our Raman data for all 6 conodonts (Color is CAI)
 p2 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=CAI,shape=Sample.name)) + 
@@ -65,6 +73,16 @@ p3 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=Line,shape=Sample
 ggpubr::ggarrange(p,p1, p2, p3,
               labels = c("a", "b", "c","d"),
               ncol = 2, nrow = 2)
+
+Fig4 <- ggarrange(p, p1, 
+                  ncol = 2, 
+                  labels = c("a", "b"))
+
+ggsave(filename = "Fig4.pdf",
+       plot = Fig4,
+       dpi = 300,
+       width = 9,
+       height = 4)
 
 #### Chapter 2: Plots of our data vs that of other authors####
 
