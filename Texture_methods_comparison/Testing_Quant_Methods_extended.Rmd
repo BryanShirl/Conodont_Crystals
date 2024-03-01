@@ -19,43 +19,50 @@ The data files are downloaded from Open Science Framework.
 source("../get_data_from_osf.R")
 get_data_from_osf(link = "https://osf.io/vnq6s/")
 Data = read.csv("Data Files/TextureResults.csv",header = T, sep=';')
+Data$Taxa <- factor(Data$Taxa, levels = c("Pro.muelleri", "Pan.equicostatus", "B. cf. aculeatus", "W. excavata", "T. gracilis", "Palmatolepis sp."))
 ```
 
 ```{r Setting up the box plots, echo=FALSE}
+color_scale <- c(
+                 "#a36b2bff", # Pro.muelleri
+                 "#bf9e66ff", # Pan.equicostatus
+                 "#aecec5ff", # B. cf. aculeatus
+                 "#2686a0ff", # W. excavata
+                 "#dcd1a2ff", # T. gracilis
+                 "#cad5c1ff") # Palmatolepis sp.
+                 
 
-p1 = ggplot(data = Data, aes(x=reorder(Taxa,T.index), y=T.index,fill=Taxa)) + 
-  geom_boxplot()
-
-p2 = ggplot(data = Data, aes(x=reorder(Taxa,T.index), y=M.index,fill=Taxa)) + 
-  geom_boxplot()
-
-p3 = ggplot(data = Data, aes(x=reorder(Taxa,T.index), y=pfT.index..C.,fill=Taxa
-)) + geom_boxplot()
-
-p4 = ggplot(data = Data, aes(x=reorder(Taxa,T.index), y=pfT.index..A.,fill=Taxa
-)) + geom_boxplot()
-```
-
-```{r, echo=F}
-color_scale <- c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#2686a0ff")
-
-  p1 = p1 +theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),axis.ticks.x=element_blank(),
+p1 = ggplot(data = Data, aes(x=Taxa, y=T.index,fill=Taxa)) + 
+  geom_boxplot()+
+  theme_classic()+
+  theme(legend.position = "none",axis.text.x=element_blank(),axis.ticks.x=element_blank(),
                                  axis.title.x = element_blank(),axis.title.y = element_text(size=9))+
-    ylab("T-index")+
-    scale_fill_manual(values=color_scale)
+  ylab("T-index")+
+  scale_fill_manual(values=color_scale)
 
-  p2 = p2 +theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),
+p2 = ggplot(data = Data, aes(x=Taxa, y=M.index,fill=Taxa)) + 
+  geom_boxplot()+
+  theme_classic()+
+  theme(legend.position = "none",axis.text.x=element_blank(),
                                  axis.ticks.x=element_blank(),axis.title.x = element_blank(),axis.title.y = element_text(size=9))+
     ylab("M-index")+
     scale_fill_manual(values=color_scale)
-  
-  p3 = p3 + theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),
+
+p3 = ggplot(data = Data, aes(x=Taxa, y=pfT.index..C.,fill=Taxa
+)) + 
+  geom_boxplot()+
+  theme_classic()+
+  theme(legend.position = "none",axis.text.x=element_blank(),
                                   axis.ticks.x=element_blank(),axis.title.x = element_blank(),axis.title.y = element_text(size=9))+
     ylab("pfT-index (C)")+
     scale_fill_manual(values=color_scale)
-  
-  p4 = p4 +theme_classic()+theme(legend.position = "none",axis.text.x=element_blank(),
-                                 axis.ticks.x=element_blank(),axis.title.x = element_blank(),axis.title.y = element_text(size=9))+
+
+p4 = ggplot(data = Data, aes(x=Taxa, y=pfT.index..A.,fill=Taxa
+)) + geom_boxplot()+
+  theme_classic()+
+  theme(axis.text.x=element_blank(),
+                              axis.ticks.x=element_blank(),axis.title.x = element_blank(),axis.title.y = element_text(size=9),
+        legend.position.inside = c(0.9, 0.05))+
     ylab("pfT-index (A)")+
     scale_fill_manual(values=color_scale)
 ```
@@ -65,9 +72,17 @@ color_scale <- c("#aecec5ff","#cad5c1ff","#bf9e66ff","#a36b2bff","#dcd1a2ff", "#
 Here we plot 3 methods of looking at the texture index of materials. First, we use the Texture Index (TI), followed by the misorientation index (M-index) and then the pole figure texture index  (pfT-index) for the A and C axis. 
 
 ```{r,echo=FALSE}
-ggpubr::ggarrange(p1, p2,p3,p4,
+boxplots <- ggpubr::ggarrange(p1, p2,p3,p4,
                   labels = c("a", "b", "c","d"),
                   ncol = 2, nrow = 2)
+```
+
+
+```{r, include=F}
+ggsave(filename = "boxplots.png",
+       plot = boxplots,
+       dpi = 300,
+       width = 9)
 ```
 
 ```{r scatter plots to compare the difference between the M-index and the T Index,echo=FALSE}
@@ -76,6 +91,7 @@ sc1= ggplot2::ggplot(Data, aes(y=M.index, x=T.index, color=Taxa, shape=Taxa)) +
   ylab(expression("M-index")) + 
   xlab(expression("T-index"))+
   theme_classic()+
+  theme(legend.position = "none")+
   scale_colour_manual(values=color_scale)+
 scale_shape_manual(values=c(4,15,16,17,18,25))+
   geom_point(size=1.5,stroke = 1.5)
@@ -88,23 +104,13 @@ sc2= ggplot2::ggplot(Data, aes(y=pfT.index..C., x=pfT.index..A., color=Taxa, sha
   theme_classic()+
   scale_colour_manual(values=color_scale)+
 scale_shape_manual(values=c(4,15,16,17,18,25))+
-  geom_point(size=1.5,stroke = 1.5)
-
+  geom_point(size=1.5,stroke = 1.5)+
+  scale_fill_discrete(breaks=c("Pro.muelleri", "Pan.equicostatus", "B. cf. aculeatus", "W. excavata", "T. gracilis", "Palmatolepis sp."))
 ```
 
 ## Big combi plot
 
 This is just a combination plot of the above data.
-
-```{r playing with plots,echo=FALSE}
-ggarrange(sc1,                                            
-          ggarrange(p1,p2 , ncol = 2, labels = c("b", "c")),
-          ggarrange(p3,p4 , ncol = 2, labels = c("d", "e")),
-          nrow =3, 
-          labels = "a"   ,      
-          heights = c(1.8, 1,1)
-) 
-```
 
 ```{r comparing area vs indices, echo=FALSE}
 TI_area <- ggplot2::ggplot(Data, aes(y=T.index, x=Area, color=Taxa, shape=Taxa)) + 
@@ -135,7 +141,6 @@ composite <- ggarrange(ggarrange(TI_area, MI_area, ncol = 2, labels = c("a", "b"
           ggarrange(sc1, sc2, ncol = 2, labels = c("c", "d")),
           nrow = 2, 
           labels = "a")
-composite
 ```
 
 ```{r, include=F}
