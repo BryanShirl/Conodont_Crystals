@@ -89,7 +89,8 @@ p4 = ggplot(data = Data, aes(x=Taxa, y=pfT.index..A.,fill=Taxa))+
                       expression(italic("W. excavata")),           
                       expression(italic("T. gracilis")),            
                       expression(italic("Palmatolepis")~ "sp.")),
-                     values = color_scale)
+                     values = color_scale)+
+  theme(legend.text=element_text(size=6))
 ```
 
 ## All the methods

@@ -3,10 +3,8 @@
 ## Authors
 
 __Bryan Shirley__  
-Utrecht University  
-Formerly: Fachgruppe Paläoumwelt, Friedrich-Alexander-Universität Erlangen-Nürnberg   
-email: b.o.shirley [at] uu.nl   
-Web page: [www.uu.nl/staff/EBJarochowska](https://www.uu.nl/staff/BOShirley)   
+Formerly: Utrecht University (2022-2023) and Fachgruppe Paläoumwelt, Friedrich-Alexander-Universität Erlangen-Nürnberg  (2019-2022) 
+email: bryan.shirley [at] zeiss.com   
 ORCID: [0000-0002-8532-3890](https://orcid.org/0000-0002-8532-3890)   
 
 __Isabella Leonhard__   
@@ -27,11 +25,10 @@ __Michel Bestmann__
 Department of Geology, Universität Wien  
 
 __Pat Trimby__  
-Oxford Instruments, High Wycombe, UK  
+Formerly: Oxford Instruments, High Wycombe, UK  
 
 __Markus Ohl__  
-Utrecht University    
-email: m.ohl [at] uu.nl  
+Formerly: Utrecht University    
 
 __Oliver Plümper__  
 Utrecht University    
