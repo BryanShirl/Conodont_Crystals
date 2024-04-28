@@ -23,11 +23,16 @@ get_data_from_osf(link = "https://osf.io/vnq6s/")
 
 Once a copy of the dataset is on the local computer, it can be imported into R:
 ```{r Read into R}
-Data = read.csv(file = "Data Files/TextureResults.csv",
+Data = read.csv(file = "Figure_3_and_4.csv",
                 header = T, 
                 sep=';')
 Data$Taxa <- factor(Data$Taxa, 
-                    levels = c("Pro.muelleri", "Pan.equicostatus", "B. cf. aculeatus", "W. excavata", "T. gracilis", "Palmatolepis sp."))
+                    levels = c("Pro.muelleri", 
+                               "Pan.equicostatus", 
+                               "B. cf. aculeatus", 
+                               "W. excavata", 
+                               "T. gracilis", 
+                               "Palmatolepis sp."))
 ```
 
 
