@@ -7,6 +7,7 @@ The data files are downloaded from Open Science Framework. This needs to
 be done only once.
 
 ``` r
+# Set eval = F to prevent this code chunk from downloading data every time
 source("../get_data_from_osf.R")
 get_data_from_osf(link = "https://osf.io/vnq6s/")
 ```
@@ -36,7 +37,7 @@ boxplots <- ggpubr::ggarrange(p1, p2,p3,p4,
 boxplots
 ```
 
-![](Testing_Quant_Methods_extended_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](index_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 ## Big combi plot
 
@@ -56,7 +57,7 @@ composite <- ggarrange(ggarrange(TI_area, MI_area, ncol = 2, labels = c("a", "b"
 composite
 ```
 
-![](Testing_Quant_Methods_extended_files/figure-gfm/Composite%20plot%20used%20in%20Extended%20Data-1.png)<!-- -->
+![](index_files/figure-gfm/Composite%20plot%20used%20in%20Extended%20Data-1.png)<!-- -->
 
 ## Regression analysis
 
