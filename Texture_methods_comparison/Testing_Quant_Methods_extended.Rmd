@@ -15,7 +15,8 @@ library(knitr)
 ```
 
 The data files are downloaded from Open Science Framework. This needs to be done only once.
-```{r downloading the data, eval = F}
+```{r downloading the data}
+# Set eval = F to prevent this code chunk from downloading data every time
 source("../get_data_from_osf.R")
 get_data_from_osf(link = "https://osf.io/vnq6s/")
 ```
