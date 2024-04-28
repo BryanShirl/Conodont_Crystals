@@ -1,7 +1,7 @@
 ---
 title: "Testing metrics for crystallographic order"
 author: "Bryan Shirley and Emilia Jarochowska"
-date: "2023-01-14"
+date: "2024-04-28"
 output: github_document
 ---
 
@@ -14,13 +14,21 @@ library(ggpubr)
 library(knitr)
 ```
 
-The data files are downloaded from Open Science Framework. 
-```{r importing the data, include = F}
+The data files are downloaded from Open Science Framework. This needs to be done only once.
+```{r downloading the data, eval = F}
 source("../get_data_from_osf.R")
 get_data_from_osf(link = "https://osf.io/vnq6s/")
-Data = read.csv("Data Files/TextureResults.csv",header = T, sep=';')
-Data$Taxa <- factor(Data$Taxa, levels = c("Pro.muelleri", "Pan.equicostatus", "B. cf. aculeatus", "W. excavata", "T. gracilis", "Palmatolepis sp."))
 ```
+
+Once a copy of the dataset is on the local computer, it can be imported into R:
+```{r Read into R}
+Data = read.csv(file = "Data Files/TextureResults.csv",
+                header = T, 
+                sep=';')
+Data$Taxa <- factor(Data$Taxa, 
+                    levels = c("Pro.muelleri", "Pan.equicostatus", "B. cf. aculeatus", "W. excavata", "T. gracilis", "Palmatolepis sp."))
+```
+
 
 ```{r Setting up the box plots, echo=FALSE}
 color_scale <- c(
@@ -35,46 +43,64 @@ color_scale <- c(
 p1 = ggplot(data = Data, aes(x=Taxa, y=T.index,fill=Taxa)) + 
   geom_boxplot()+
   theme_classic()+
-  theme(legend.position = "none",axis.text.x=element_blank(),axis.ticks.x=element_blank(),
-                                 axis.title.x = element_blank(),axis.title.y = element_text(size=9))+
+  theme(legend.position = "none",
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size=9))+
   ylab("T-index")+
   scale_fill_manual(values=color_scale)
 
 p2 = ggplot(data = Data, aes(x=Taxa, y=M.index,fill=Taxa)) + 
   geom_boxplot()+
   theme_classic()+
-  theme(legend.position = "none",axis.text.x=element_blank(),
-                                 axis.ticks.x=element_blank(),axis.title.x = element_blank(),axis.title.y = element_text(size=9))+
-    ylab("M-index")+
-    scale_fill_manual(values=color_scale)
+  theme(legend.position = "none",
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size=9))+
+  ylab("M-index")+
+  scale_fill_manual(values=color_scale)
 
-p3 = ggplot(data = Data, aes(x=Taxa, y=pfT.index..C.,fill=Taxa
-)) + 
+p3 = ggplot(data = Data, aes(x=Taxa, y=pfT.index..C.,fill=Taxa)) + 
   geom_boxplot()+
   theme_classic()+
-  theme(legend.position = "none",axis.text.x=element_blank(),
-                                  axis.ticks.x=element_blank(),axis.title.x = element_blank(),axis.title.y = element_text(size=9))+
-    ylab("pfT-index (C)")+
-    scale_fill_manual(values=color_scale)
+  theme(legend.position = "none",
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size=9))+
+  ylab("pfT-index (C)")+
+  scale_fill_manual(values=color_scale)
 
-p4 = ggplot(data = Data, aes(x=Taxa, y=pfT.index..A.,fill=Taxa
-)) + geom_boxplot()+
+p4 = ggplot(data = Data, aes(x=Taxa, y=pfT.index..A.,fill=Taxa))+ 
+  geom_boxplot()+
   theme_classic()+
   theme(axis.text.x=element_blank(),
-                              axis.ticks.x=element_blank(),axis.title.x = element_blank(),axis.title.y = element_text(size=9),
+        axis.ticks.x=element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size=9),
         legend.position.inside = c(0.9, 0.05))+
-    ylab("pfT-index (A)")+
-    scale_fill_manual(values=color_scale)
+  ylab("pfT-index (A)")+
+  scale_fill_manual(name = "Taxon", 
+                      labels = c(expression(italic("Pro. muelleri")),                 
+                      expression(italic("Pan. equicostatus")),            
+                      expression(italic("B.")~ "cf."~italic("aculeatus")),          
+                      expression(italic("W. excavata")),           
+                      expression(italic("T. gracilis")),            
+                      expression(italic("Palmatolepis")~ "sp.")),
+                     values = color_scale)
 ```
 
 ## All the methods
 
 Here we plot 3 methods of looking at the texture index of materials. First, we use the Texture Index (TI), followed by the misorientation index (M-index) and then the pole figure texture index  (pfT-index) for the A and C axis. 
 
-```{r,echo=FALSE}
+```{r}
 boxplots <- ggpubr::ggarrange(p1, p2,p3,p4,
                   labels = c("a", "b", "c","d"),
                   ncol = 2, nrow = 2)
+boxplots
 ```
 
 
@@ -102,15 +128,29 @@ sc2= ggplot2::ggplot(Data, aes(y=pfT.index..C., x=pfT.index..A., color=Taxa, sha
   ylab(expression("pfT-index(C)")) + 
   xlab(expression("pfT-index(A)"))+
   theme_classic()+
-  scale_colour_manual(values=color_scale)+
-scale_shape_manual(values=c(4,15,16,17,18,25))+
   geom_point(size=1.5,stroke = 1.5)+
-  scale_fill_discrete(breaks=c("Pro.muelleri", "Pan.equicostatus", "B. cf. aculeatus", "W. excavata", "T. gracilis", "Palmatolepis sp."))
+  scale_color_manual(name = "Taxon", 
+                      labels = c(expression(italic("Pro. muelleri")),                 
+                      expression(italic("Pan. equicostatus")),            
+                      expression(italic("B.")~ "cf."~italic("aculeatus")),          
+                      expression(italic("W. excavata")),           
+                      expression(italic("T. gracilis")),            
+                      expression(italic("Palmatolepis")~ "sp.")),
+                     values = color_scale)+
+  scale_shape_manual(name = "Taxon",
+                     labels = c(expression(italic("Pro. muelleri")),                 
+                      expression(italic("Pan. equicostatus")),            
+                      expression(italic("B.")~ "cf."~italic("aculeatus")),          
+                      expression(italic("W. excavata")),           
+                      expression(italic("T. gracilis")),            
+                      expression(italic("Palmatolepis")~ "sp.")),
+                     values=c(4,15,16,17,18,25))
+
 ```
 
 ## Big combi plot
 
-This is just a combination plot of the above data.
+A combination plot of the texture index comparison.
 
 ```{r comparing area vs indices, echo=FALSE}
 TI_area <- ggplot2::ggplot(Data, aes(y=T.index, x=Area, color=Taxa, shape=Taxa)) + 
@@ -134,13 +174,13 @@ MI_area<- ggplot2::ggplot(Data, aes(y=M.index, x=Area, color=Taxa, shape=Taxa)) 
   scale_shape_manual(values=c(4,15,16,17,18,25))
 
 ```
-## Composite plot used in Extended Data
 
-```{r Composite plot used in Extended Data, echo=F}
+```{r Composite plot used in Extended Data}
 composite <- ggarrange(ggarrange(TI_area, MI_area, ncol = 2, labels = c("a", "b")),
           ggarrange(sc1, sc2, ncol = 2, labels = c("c", "d")),
           nrow = 2, 
           labels = "a")
+composite
 ```
 
 ```{r, include=F}
