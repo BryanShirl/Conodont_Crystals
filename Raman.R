@@ -11,12 +11,11 @@ source("get_data_from_osf.R")
 
 get_data_from_osf(link = "https://osf.io/d7j69/")
 
-OurConodontData = read.csv("Shirley_et_al_Raman_01.csv")
+OurConodontData = read.csv("Figure_5a.csv")
 OurConodontData$Sample.name <- factor(OurConodontData$Sample.name,
                                       levels = c("Pro. muelleri", "Pan. equicostatus ", "B. cf. aculeatus", "W. excavata", "T. gracilis", "Palmatolepis sp."))
-Specdata = read.csv("Shirley_et_al_Raman_03.csv")
-OtherAuthorConoData = read.csv("Shirley_et_al_Raman_02.csv")
-ThomasTeethData = read.csv("Shirley_et_al_Raman_04.csv")
+Specdata = read.csv("Figure_5b.csv")
+OtherAuthorConoData = read.csv("Figure_6.csv")
 
 
 #### Chapter 1 : plots of our data ####
@@ -88,7 +87,7 @@ ggsave(filename = "Fig4.pdf",
 
 ## Plot our data vs other publications with conodont raman data
 
-pa = ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Author)) + 
+ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Author)) + 
   geom_point(size=3) +
   theme_classic()+
   ylab(expression("FWHM of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) +
@@ -98,27 +97,6 @@ pa = ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shap
   scale_color_manual(values=c("#8babf1", "#054fb9","#c44601", "#f57600"))+
   xlim(954,968)+
   ylim(0,20)
-
-## Plot our data vs Thomas et.al. 2011 data (selected for enamel,enameloid and dentine)
-
-pb = ggplot2::ggplot(ThomasTeethData, aes(y=FWHM, x=Peak, color=Name, shape=Location
- )) + 
-  theme_classic()+
-  geom_point(size=5) + 
-  scale_shape_manual(values=c(16,15,17,18))+
-  ylab(expression("FWHM of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) + 
-  xlab(expression("PCMI of ν"[1]*"-(PO"[4]*") peak (cm"^-1*")")) +
-  scale_color_manual(values=c('#EBDA69', '#fcd804', 'darkgray', '#61288A', '#7D33B2', '#AE74D7', '#C59CE2', '#DCC3EE', 
-                                '#C8DDDC',  '#4C9338', '#5FB846', '#7EC76A',
-                                              "#9ED58F"))+
-  theme(legend.key.size = unit(0.4, 'cm')) +
-  xlim(954,968)+
-  ylim(0,20)
-  
-  
-ggpubr::ggarrange(pa, pb,
-          labels = c("A", "B", "C","D"),
-          ncol = 1, nrow = 2)
 
 #### Chapter 3: Regression analysis ####
 
