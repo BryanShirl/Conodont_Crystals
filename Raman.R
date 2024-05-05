@@ -20,6 +20,14 @@ OtherAuthorConoData = read.csv("Figure_6.csv")
 
 #### Chapter 1 : plots of our data ####
 
+color_scale <- c(
+  "#a36b2bff", # Pro.muelleri
+  "#bf9e66ff", # Pan.equicostatus
+  "#aecec5ff", # B. cf. aculeatus
+  "#2686a0ff", # W. excavata
+  "#dcd1a2ff", # T. gracilis
+  "#cad5c1ff") # Palmatolepis sp.
+
 ## Plots our Raman data for all 6 conodonts
 p = ggplot2::ggplot(Specdata,aes(x=Spectra)) + 
   geom_line(aes(y = Pro..muelleri), color = "#a36b2bff",linewidth =0.75,) +
@@ -37,18 +45,22 @@ p = ggplot2::ggplot(Specdata,aes(x=Spectra)) +
 
 ## Plots our Raman data for all 6 conodonts
 p1 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=Sample.name, shape=Sample.name)) + 
-  geom_point(size=3,stroke = 2) + 
-  scale_shape_manual(values=c(4,15,16,17,18,25))+
+  geom_point(size=1.5, stroke = 1) + 
   ylab(expression("FWHM of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) + 
   xlab(expression("PCMI of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
   theme_classic()+
-  scale_colour_manual(values=c("#a36b2bff", # Pro.muelleri
-                               "#bf9e66ff", # Pan.equicostatus
-                               "#aecec5ff", # B. cf. aculeatus
-                               "#2686a0ff", # W. excavata
-                               "#dcd1a2ff", # T. gracilis
-                               "#cad5c1ff") # Palmatolepis sp.
-  )+theme(legend.position = "none")
+#  theme(legend.position = c(.85, .85), legend.text = element_text(size=8), legend.title=element_text(size=9))+
+  scale_colour_manual(values=color_scale,
+                    aesthetics = c("colour", "fill"),
+                    name = "Taxon", 
+                    labels = c(expression(italic("Pro. muelleri")),                 
+                               expression(italic("Pan. equicostatus")),            
+                               expression(italic("B.")~ "cf."~italic("aculeatus")),          
+                               expression(italic("W. excavata")),           
+                               expression(italic("T. gracilis")),            
+                               expression(italic("Palmatolepis")~ "sp.")))+
+  scale_shape_manual(values=c(4,15,16,17,18,25))
+
 
 ## Plots our Raman data for all 6 conodonts (Color is CAI)
 p2 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=CAI,shape=Sample.name)) + 
@@ -73,15 +85,15 @@ ggpubr::ggarrange(p,p1, p2, p3,
               labels = c("a", "b", "c","d"),
               ncol = 2, nrow = 2)
 
-Fig4 <- ggarrange(p, p1, 
+Figure_5 <- ggarrange(p, p1, 
                   ncol = 2, 
                   labels = c("a", "b"))
 
-ggsave(filename = "Fig4.pdf",
-       plot = Fig4,
-       dpi = 300,
-       width = 9,
-       height = 4)
+ggsave(filename = "Figure_5.pdf",
+       plot = Figure_5,
+       width = 180,
+       height = 80,
+       units = "mm")
 
 #### Chapter 2: Plots of our data vs that of other authors####
 
@@ -108,15 +120,15 @@ Zhang <- models$`Zhang et al. 2017`$regression.results[models$`Zhang et al. 2017
 McMillan <- models$`McMillan & Golding 2019`$regression.results[models$`McMillan & Golding 2019`$regression.results$Method=="RMA",]
 Rantitsch <- models$`Rantitsch et al. 2020`$regression.results[models$`Rantitsch et al. 2020`$regression.results$Method=="RMA",]
   
-ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Author)) + 
-  geom_point(size=3)+
+Figure_6 <- ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Author)) + 
+  geom_point(size=1)+
   theme_classic()+
   ylab(expression("FWHM of the "*nu[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) +
   xlab(expression("PCMI of the "*nu[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
-  theme(legend.key.size = unit(0.6, 'cm')) +
-  theme(legend.position = c(.82, .86), legend.text = element_text(size=12))+
-  theme(axis.text=element_text(size=12),
-        axis.title=element_text(size=14,face="bold"))+
+  theme(legend.key.size = unit(0.2, 'cm')) +
+  theme(legend.position = c(.25, .25), legend.text = element_text(size=6), legend.title=element_text(size=6))+
+  theme(axis.text=element_text(size=6),
+        axis.title=element_text(size=8,face="bold"))+
   scale_shape_manual(values=c(16,15,17,18))+
   scale_color_manual(values=c("#8babf1", "#054fb9","#c44601", "#f57600"))+
   xlim(954,968)+
@@ -126,8 +138,12 @@ ggplot2::ggplot(OtherAuthorConoData, aes(y=FWHM, x=Peak, color=Author, shape=Aut
  theme(text = element_text(family = "Open Sans"))
 
 
-ggplot2::ggsave(filename = "Raman_comparison_main_text.png",
-                dpi = 300)
+ggplot2::ggsave(filename = "Figure_6.pdf",
+                device = cairo_pdf,
+                width = 88,
+                height = 66,
+                units = "mm")
+
 
 #### Exporting slope coefficients and their confidence intervals into a file ####
 
