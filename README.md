@@ -2,30 +2,38 @@
 
 ## Authors
 
-__Bryan Shirley__  
-Formerly: Utrecht University (2022-2023) and Fachgruppe Paläoumwelt, Friedrich-Alexander-Universität Erlangen-Nürnberg  (2019-2022) 
+__Bryan Shirley__
+Formerly: Utrecht University (2022-2023) and Fachgruppe Paläoumwelt, Friedrich-Alexander-Universität Erlangen-Nürnberg  (2019-2022)
+Current address: Carl Zeiss Ltd., Cambridge, UK
 email: bryan.shirley [at] zeiss.com   
 ORCID: [0000-0002-8532-3890](https://orcid.org/0000-0002-8532-3890)   
 
-__Isabella Leonhard__   
+__Isabella Leonhard__
 Department of Palaeontology, Universität Wien  
 Formerly: Institute of Evolutionary Biology, Biological and Chemical Research Centre, Faculty of Biology, University of Warsaw  
 email: isabella.leonhard [at] univie.ac.at  
 
-__Duncan Murdock__  
-Oxford University Museum of Natural History  
+__Duncan Murdock__
+Oxford University Museum of Natural History
+email: duncan.murdock [at] oum.ox.ac.uk
 
 __John Repetski__  
-US Geological Survey-Emeritus  
+US Geological Survey-Emeritus
+email: jrepetski [at] cox.net
 
 __Przemysław Świś__  
-Institute of Evolutionary Biology, Biological and Chemical Research Centre, Faculty of Biology, University of Warsaw  
+Institute of Evolutionary Biology, Biological and Chemical Research Centre, Faculty of Biology, University of Warsaw
+Department of Chemical and Geological Sciences, University of Modena and Reggio Emilia, Via Campi 103, 41125 Modena, Italy
+email: swis.przemyslaw [at] gmail.com
 
 __Michel Bestmann__  
-Department of Geology, Universität Wien  
+Department of Geology, Universität Wien
+email: michel.bestmann [at] univie.ac.at
 
 __Pat Trimby__  
-Formerly: Oxford Instruments, High Wycombe, UK  
+Formerly: Oxford Instruments, High Wycombe, UK
+Current address: Carl Zeiss Ltd., Cambridge, UK
+email: patrick.trimby [at] zeiss.com
 
 __Markus Ohl__  
 Formerly: Utrecht University    
