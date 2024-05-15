@@ -45,21 +45,28 @@ p = ggplot2::ggplot(Specdata,aes(x=Spectra)) +
 
 ## Plots our Raman data for all 6 conodonts
 p1 = ggplot2::ggplot(OurConodontData, aes(y=FWHM, x=Peak,color=Sample.name, shape=Sample.name)) + 
-  geom_point(size=1.5, stroke = 1) + 
+  geom_point(size=2, stroke = 1) + 
   ylab(expression("FWHM of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")")) + 
   xlab(expression("PCMI of ν"[1]*"-(PO"[4]^-3*") peak (cm"^-1*")"))+
   theme_classic()+
-#  theme(legend.position = c(.85, .85), legend.text = element_text(size=8), legend.title=element_text(size=9))+
+  theme(legend.position = c(0.85, 0.8), legend.text = element_text(size=6), legend.title=element_text(size=7))+
   scale_colour_manual(values=color_scale,
-                    aesthetics = c("colour", "fill"),
-                    name = "Taxon", 
-                    labels = c(expression(italic("Pro. muelleri")),                 
-                               expression(italic("Pan. equicostatus")),            
-                               expression(italic("B.")~ "cf."~italic("aculeatus")),          
-                               expression(italic("W. excavata")),           
-                               expression(italic("T. gracilis")),            
-                               expression(italic("Palmatolepis")~ "sp.")))+
-  scale_shape_manual(values=c(4,15,16,17,18,25))
+                      name = "Taxon",
+                      aesthetics = c("colour", "fill"),
+                      labels = c(expression(italic("Pro. muelleri")),                 
+                                 expression(italic("Pan. equicostatus")),            
+                                 expression(italic("B.")~ "cf."~italic("aculeatus")),          
+                                 expression(italic("W. excavata")),           
+                                 expression(italic("T. gracilis")),            
+                                 expression(italic("Palmatolepis")~ "sp.")))+
+  scale_shape_manual(values=c(4,15,16,17,18,25),
+                     name = "Taxon", 
+                     labels = c(expression(italic("Pro. muelleri")),                 
+                                expression(italic("Pan. equicostatus")),            
+                                expression(italic("B.")~ "cf."~italic("aculeatus")),          
+                                expression(italic("W. excavata")),           
+                                expression(italic("T. gracilis")),            
+                                expression(italic("Palmatolepis")~ "sp.")))
 
 
 ## Plots our Raman data for all 6 conodonts (Color is CAI)
@@ -92,7 +99,7 @@ Figure_5 <- ggarrange(p, p1,
 ggsave(filename = "Figure_5.pdf",
        plot = Figure_5,
        width = 180,
-       height = 80,
+       height = 90,
        units = "mm")
 
 #### Chapter 2: Plots of our data vs that of other authors####

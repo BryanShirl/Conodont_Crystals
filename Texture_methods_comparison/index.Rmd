@@ -1,7 +1,7 @@
 ---
 title: "Testing metrics for crystallographic order"
 author: "Bryan Shirley and Emilia Jarochowska"
-date: "2024-04-28"
+date: "2024-05-09"
 output: github_document
 ---
 
@@ -112,10 +112,11 @@ boxplots
 
 
 ```{r, include=F}
-ggsave(filename = "boxplots.png",
+ggsave(filename = "boxplots.pdf",
        plot = boxplots,
-       dpi = 300,
-       width = 9)
+       width = 180,
+       height = 130,
+       units = "mm")
 ```
 
 ```{r scatter plots to compare the difference between the M-index and the T Index,echo=FALSE}
@@ -211,3 +212,19 @@ Regression_results <- regression(unique(Data$Taxa))
 kable(x = Regression_results,
       row.names = F)
 ```
+
+## Test for the equality of means for the T Index
+
+```{r}
+aggregate(T.index ~ Taxa, data=Data, mean)
+```
+
+To apply the (conservative) Bonferroni 
+
+```{r}
+require(coin)
+coin::independence_test(T.index ~ Taxa, 
+            data = Data,
+            distribution = "exact")
+```
+Confidence intervals: https://stats.stackexchange.com/questions/368899/is-it-possible-to-calculate-a-confidence-interval-related-to-a-significant-p-val
