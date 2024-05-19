@@ -2,53 +2,37 @@
 
 ## Authors
 
-__Bryan Shirley__
-
-Formerly: Utrecht University (2022-2023) and Fachgruppe Paläoumwelt, Friedrich-Alexander-Universität Erlangen-Nürnberg  (2019-2022)
-
-Current address: Carl Zeiss Ltd., Cambridge, UK
-
-email: bryan.shirley [at] zeiss.com
-
+__Bryan Shirley__    
+Formerly: Utrecht University (2022-2023) and Fachgruppe Paläoumwelt, Friedrich-Alexander-Universität Erlangen-Nürnberg  (2019-2022)    
+Current address: Carl Zeiss Ltd., Cambridge, UK    
+email: bryan.shirley [at] zeiss.com    
 ORCID: [0000-0002-8532-3890](https://orcid.org/0000-0002-8532-3890)   
 
-__Isabella Leonhard__
-
-Department of Palaeontology, Universität Wien
-
-Formerly: Institute of Evolutionary Biology, Biological and Chemical Research Centre, Faculty of Biology, University of Warsaw
-
+__Isabella Leonhard__    
+Department of Palaeontology, Universität Wien    
+Formerly: Institute of Evolutionary Biology, Biological and Chemical Research Centre, Faculty of Biology, University of Warsaw    
 email: isabella.leonhard [at] univie.ac.at  
 
-__Duncan Murdock__
-
-Oxford University Museum of Natural History
-
+__Duncan Murdock__    
+Oxford University Museum of Natural History    
 email: duncan.murdock [at] oum.ox.ac.uk
 
 __John Repetski__  
 US Geological Survey-Emeritus
-
 email: jrepetski [at] cox.net
 
-__Przemysław Świś__ 
-
-Institute of Evolutionary Biology, Biological and Chemical Research Centre, Faculty of Biology, University of Warsaw
-
-Department of Chemical and Geological Sciences, University of Modena and Reggio Emilia, Via Campi 103, 41125 Modena, Italy
-
+__Przemysław Świś__     
+Institute of Evolutionary Biology, Biological and Chemical Research Centre, Faculty of Biology, University of Warsaw    
+Department of Chemical and Geological Sciences, University of Modena and Reggio Emilia, Via Campi 103, 41125 Modena, Italy    
 email: swis.przemyslaw [at] gmail.com
 
 __Michel Bestmann__  
-Department of Geology, Universität Wien
-
+Department of Geology, Universität Wien    
 email: michel.bestmann [at] univie.ac.at
 
 __Pat Trimby__  
-Formerly: Oxford Instruments, High Wycombe, UK
-
-Current address: Carl Zeiss Ltd., Cambridge, UK
-
+Formerly: Oxford Instruments, High Wycombe, UK    
+Current address: Carl Zeiss Ltd., Cambridge, UK    
 email: patrick.trimby [at] zeiss.com
 
 __Markus Ohl__  
@@ -119,14 +103,14 @@ The code has been tested and ran on Windows 10 and MacOS Sonoma 14.2.1. The load
 
 ## Citation
 
-Shirley, B., Leonhard, I., Murdock, D.J.E., Repetski, J.E., Świś, P., Bestmann, M., Trimby, P., Ohl, M., Plümper, O., King, H., and Jarochowska, E., 2023, Code for Increasing control over biomineralization in conodont evolution: https://github.com/BryanShirl/Conodont_Crystals. https://github.com/BryanShirl/Conodont_Crystals/
+Shirley, B., Leonhard, I., Murdock, D.J.E., Repetski, J.E., Świś, P., Bestmann, M., Trimby, P., Ohl, M., Plümper, O., King, H., and Jarochowska, E., 2024, Code for Increasing control over biomineralization in conodont evolution: https://github.com/BryanShirl/Conodont_Crystals. https://github.com/BryanShirl/Conodont_Crystals/
 
 ```
-@code{shirley_code_2023,
+@code{shirley_code_2024,
 	title = {Code for Increasing control over biomineralization in conodont evolution},
 	url = {https://github.com/BryanShirl/Conodont_Crystals},
 	author = {Shirley, Bryan and Leonhard, Isabella and Murdock, Duncan J. E. and Repetski, John E. and Świś, Przemysław and Bestmann, Michel and Trimby, Pat and Ohl, Markus and Plümper, Oliver and King, Helen and Jarochowska, E.},
-	year = {2023},
+	year = {2024},
 }
 ```
 
