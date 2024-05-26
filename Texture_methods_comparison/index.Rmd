@@ -1,7 +1,7 @@
 ---
 title: "Testing metrics for crystallographic order"
 author: "Bryan Shirley and Emilia Jarochowska"
-date: "2024-05-09"
+date: "2024-05-15"
 output: github_document
 ---
 
@@ -54,7 +54,7 @@ p1 = ggplot(data = Data, aes(x=Taxa, y=T.index,fill=Taxa)) +
         axis.ticks.x=element_blank(),
         axis.title.x = element_blank(),
         axis.title.y = element_text(size=9))+
-  ylab("T-index")+
+  ylab("Texture index")+
   scale_fill_manual(values=color_scale)
 
 p2 = ggplot(data = Data, aes(x=Taxa, y=M.index,fill=Taxa)) + 
@@ -213,18 +213,124 @@ kable(x = Regression_results,
       row.names = F)
 ```
 
+## Figure 3
+
+```{r}
+library(tidyverse)
+hull_data <- 
+  Data %>%
+  group_by(Taxa) %>% 
+  slice(chull(T.index, Area))
+
+scatterplot <- ggplot(data = Data, aes(x=Area, y=T.index, shape = Taxa, color=Taxa, fill = Taxa))+
+  scale_color_manual(values = color_scale) +
+  scale_fill_manual(values = color_scale) +
+  scale_shape_manual(values = c(4,15,16,17,18,25))+
+  geom_polygon(data = hull_data,
+               aes(fill = Taxa,
+                   colour = Taxa),
+               alpha = 0.1,
+               show.legend = FALSE)+
+  theme_bw()+
+  geom_point()+
+  ylab(expression("Texture index")) + 
+  xlab(expression(paste("Area ", mu, "m"^2)))+
+  theme(legend.position = "bottom")
+```
+
+Combined Fig. 3:
+
+```{r}
+Fig_3 <- ggpubr::ggarrange(p1, scatterplot,
+                  labels = c("a", "b"),
+                  ncol = 1, nrow = 2,
+                  heights = c(1, 2))
+```
+
+```{r}
+ggsave(filename = "Figure_3.pdf",
+       plot = Fig_3,
+       dpi = 300,
+       width = 180,
+       height = 170,
+       units = "mm")
+```
+
+
 ## Test for the equality of means for the T Index
 
 ```{r}
 aggregate(T.index ~ Taxa, data=Data, mean)
 ```
+```{r Kruskal-Wallis test}
+kruskal.test(T.index ~ Taxa, 
+             data = Data) 
+```
+```{r confidence level}
+cl = 0.05/6
+```
 
-To apply the (conservative) Bonferroni 
+
+To apply the (conservative) Bonferroni correction, generate a table with pairwise confidence intervals for each taxon:
 
 ```{r}
-require(coin)
-coin::independence_test(T.index ~ Taxa, 
-            data = Data,
-            distribution = "exact")
+Wilcox_corrected <- array(data = NA,
+                          dim = c(6,6,2),
+                          dimnames = list("Taxon" = levels(Data$Taxa), 
+                                          "Taxon" = levels(Data$Taxa), 
+                                          "Conf.Interval" = c("Lower", "Upper"))
+                          )
+
+for (i in levels(Data$Taxa)) {
+  for (j in levels(Data$Taxa)) {
+    if (i == j) {
+      Wilcox_corrected[i,j,] <- c(NA,NA)
+    }
+    else {
+      Wilcox_corrected[i,j,] <- wilcox.test(Data$T.index[which(Data$Taxa == i)],
+                                         Data$T.index[which(Data$Taxa == j)], 
+                                         conf.int=T, 
+                                         conf.lev=cl)$conf.int
+    }
+  }
+}
 ```
-Confidence intervals: https://stats.stackexchange.com/questions/368899/is-it-possible-to-calculate-a-confidence-interval-related-to-a-significant-p-val
+
+```{r}
+write.table(Wilcox_corrected[i,j,1], 
+            file = "Lower_CI.csv", 
+            sep = ",",
+            row.names = T,
+            col.names = T)
+```
+
+
+And p-values for the same Bonferroni correction:
+
+```{r}
+Wilcox_pval <- matrix(data = NA,
+                            nrow = length(levels(Data$Taxa)),
+                            ncol = length(levels(Data$Taxa)),
+                            dimnames = list("Taxon" = levels(Data$Taxa), "Taxon" = levels(Data$Taxa)))
+
+for (i in levels(Data$Taxa)) {
+  for (j in levels(Data$Taxa)) {
+    if (i == j) {
+      Wilcox_pval[i,j] <- NA
+    }
+    else {
+      Wilcox_pval[i,j] <- wilcox.test(Data$T.index[which(Data$Taxa == i)],
+                                         Data$T.index[which(Data$Taxa == j)], 
+                                         conf.int=T, 
+                                         conf.lev=cl)$p.value
+    }
+  }
+}
+```
+
+Make a nice table:
+```{r}
+kable(x = Wilcox_pval,
+      row.names = T)
+```
+
