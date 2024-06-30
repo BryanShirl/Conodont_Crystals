@@ -1,5 +1,8 @@
 # Code and data associated with the article "Increasing control or biomineralization in conodont evolution"
 
+Shirley, B., Leonhard, I., Murdock, D.J., Repetski, J., Świś, P., Bestmann, M., Trimby, P., Ohl, M., Plümper, O., King, H.E. and Jarochowska, E., 2024. [Increasing control over biomineralization in conodont evolution](https://www.nature.com/articles/s41467-024-49526-0). Nature Communications, 15(1), p.5273.
+
+
 ## Authors
 
 __Bryan Shirley__    
